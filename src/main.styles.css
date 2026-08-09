@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,600&display=swap');
+
+body {
+  	margin: 0;
+    padding: 0;
+    line-height: normal;
+
+    box-sizing: border-box;
+}
+:root {
+  	
+  	/* Common Style Variables */
+  	
+  	/* Color */
+  	--color-gray-100: #0d1935;
+  	--color-gray-200: rgba(255, 255, 255, 0.6);
+  	--color-white: #fff;
+  	
+  	/* Font */
+  	--font-plus-jakarta-sans: Plus Jakarta Sans, Arial, sans-serif;
+  	--font-poppins: Poppins, Arial, sans-serif;
+  	
+}
+
+

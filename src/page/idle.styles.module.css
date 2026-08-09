@@ -1,0 +1,180 @@
+.idleV4 {
+  	width: 100%;
+	height: 100%;
+	min-height: 100vh;
+  	/* height: 1366px; */
+	/* height: max-content; */
+  	/* position: relative; */
+  	background: linear-gradient(180deg, #070e1f, #122143);
+  	overflow: hidden;
+  	
+	display: flex;
+  	flex-direction: column;
+	flex-grow:  1;
+  	/* align-items: center; */
+
+  	isolation: isolate;
+  	/* gap: 1038px; */
+	gap: 0.5em;
+  	text-align: left;
+
+  	color: var(--color-white);
+  	font-family: var(--font-poppins);
+  	font-size: 32px;
+
+	/* border: 2px solid red; */
+}
+
+::-webkit-scrollbar{
+	display: none;
+}
+
+p{
+	all: unset; 
+	/* user agent override ayaw kasi ng umayos e  */
+}
+
+.header {
+  	align-self: stretch;
+  	display: flex;
+	width: 100%;
+  	flex-direction: column;
+  	flex-shrink: 0;
+  	align-items: flex-start;
+  	padding: 10px 25px;
+	/* border: 2px solid red; */
+}
+.headerTitle {
+  	align-self: stretch;
+  	position: relative;
+  	text-transform: uppercase;
+  	font-weight: 600;
+	/* border: 2px solid blue; */
+}
+.headerSubtitle {
+  	align-self: stretch;
+  	position: relative;
+  	font-size: 22px;
+  	letter-spacing: 0.12em;
+  	text-transform: uppercase;
+  	font-weight: 600;
+  	color: var(--color-gray-200);
+
+	margin-top: -10px;
+
+	/* border: 2px solid blue; */
+}
+
+.philwrapper{
+	margin: 0 auto;
+	display: flex;
+	justify-content: center;
+	flex-grow: 1;
+
+	width: 100%;
+
+	/* border: 2px solid orange; */
+}
+
+.philwrapper svg{
+	transform: translateX(-2em);
+	
+	/* transform: scale(1.5);
+	transform-origin: center; */
+
+	
+	width: 100%;
+	height: auto;
+	max-width: 100%;
+	display: block;
+	
+	/* border: 2px solid blue; */
+}
+
+/* .philwrapper .click{
+	border: 2px solid red;
+	width: 100px;
+	height: 100px;
+	display: block;
+	position: absolute;
+	top: 100;
+	left: 0;
+
+} */
+
+path, line, circle{
+	vector-effect: non-scaling-stroke;
+
+}
+
+/* .philippinesIcon {
+  	width: 846px;
+  	height: 915px;
+  	position: absolute;
+  	margin: 0 !important;
+  	top: 180px;
+  	left: -67px;
+  	z-index: 3;
+  	flex-shrink: 0;
+} */
+
+.cit1Icon {
+  	width: 266px;
+  	height: 266px;
+  	margin: 0 !important;
+  	object-fit: cover;
+  	z-index: 2;
+  	flex-shrink: 0;
+
+	position: absolute;
+	bottom: 100px;
+
+	transition: 300ms cubic-bezier(0.77, 0, 0.175, 1);
+	cursor: pointer;
+
+	/* border: 2px solid red; */
+}
+
+.cit1Icon:hover{
+	transform: scale(1.1);
+}
+
+.cit1Icon:active{
+	transform: scale(0.95);
+	transition: 100ms ease; 
+}
+
+
+.footer {
+  	width: 100%;
+  	height: 100%;
+  	background-color: var(--color-gray-100);
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: center;
+  	padding: 140px 180px 28px;
+  	box-sizing: border-box;
+	
+  	text-align: center;
+  	font-size: 48px;
+  	font-family: var(--font-plus-jakarta-sans);
+	
+	flex-shrink: 0;
+	/* flex-grow: 1; fill all remaining space */
+	/* border: 2px solid green; */
+}
+.footerButtonText {
+	/* align-self: stretch; */
+  	text-transform: uppercase;
+  	font-weight: 600;
+  	flex-shrink: 0;
+
+
+	/* cursor: pointer; */
+	transition: 300ms ease-in-out;
+	/* border: 2px solid green; */
+}
+
+
+

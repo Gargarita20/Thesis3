@@ -1,0 +1,6 @@
+.intro{
+    transition: all 200ms linear;
+}
+.intro:hover{
+    transform: scale(1.1);
+}
