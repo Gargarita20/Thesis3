@@ -1,20 +1,28 @@
 import './home.styles.css'
+import Switch from '../components/switch';
 
 function Home(){
     return(
-        <div className='nav'>
-            <div className='nav-left'>
-                <div className="nav-left-icon">
-                    {/* icon here */}
+        <div className="home">
+            <div className='nav'>
+                <div className='nav-left'>
+                    <div className="nav-left-icon">
+                        {/* icon here */}
+                    </div>
+                    <div className="nav-left-header">
+                        <h2>CIT Partnerships</h2>
+                        <h4>Industry Directories</h4>
+                    </div>
                 </div>
-                <div className="nav-left-header">
-                    <h2>This is your home</h2>
-                    <p>Industry Directories</p>
+                <div className="nav-right">
+                    <Switch/>
                 </div>
             </div>
+                
             
-            
+
         </div>
+        
     )
 }
 

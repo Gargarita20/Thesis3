@@ -7,6 +7,8 @@ body {
     line-height: normal;
 
     box-sizing: border-box;
+
+	font-family: var(--font-plus-jakarta-sans);
 }
 :root {
   	
@@ -16,10 +18,17 @@ body {
   	--color-gray-100: #0d1935;
   	--color-gray-200: rgba(255, 255, 255, 0.6);
   	--color-white: #fff;
+
+	--main-blue:#070e1f;
+	/* --second-blue:; */
   	
   	/* Font */
   	--font-plus-jakarta-sans: Plus Jakarta Sans, Arial, sans-serif;
   	--font-poppins: Poppins, Arial, sans-serif;
+
+	/* Margins */
+
+	--home-margin: 15px;
   	
 }
 
