@@ -1,0 +1,44 @@
+.filter{
+    cursor: pointer;
+    border: 2px solid var(--color-border);
+    border-radius: 20px;
+    height: 30px;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 22px;
+    position: relative;
+    transition: 300ms ease;
+}
+
+.filter .name{
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.filter .filler{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    /* background-color: blueviolet; */
+}
+
+
+.filter input{
+    display: none;
+}
+
+.filter:hover{
+    background-color: rgb(51, 55, 110);
+}
+
+.filter input:checked + .filler{
+    background-color: var(--color-filter);
+}

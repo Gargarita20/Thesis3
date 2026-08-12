@@ -1,0 +1,89 @@
+.cards{
+    background-color: var(--color-card);
+    border-radius: 20px;
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+.cards .bar{
+    position: absolute;
+    top: 20px;
+    left: 0;
+    height: 60%;
+    width: 10px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: red;
+}
+
+.cards .content{
+    /* border: 2px solid green; */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* gap: 20px; */
+
+    padding: 10px;
+}
+
+.cards .icon{
+    width: 3em;
+    height: 3em;
+    border-radius: 50px;
+    background-color: red;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 0 20px 0 30px;
+}
+
+.cards .description{
+    display: flex;
+    flex-grow: 1;
+
+    flex-direction: column;
+    border: 2pxs solid brown;
+}
+
+.cards .qrcode{
+    /* border: 2px solid yellow; */
+    display: flex;
+    align-items: center;
+    justify-content:flex-end;
+    flex-grow: 1;
+}
+
+.cards .qrcode-wrapper{
+    margin-right: 20px;
+    /* background-color: rgb(59, 59, 133); */
+    padding: 20px 5px 5px 5px;
+    border-radius: 12px;
+}
+
+.cards h1,h4,p{
+    margin: 0;
+    width: fit-content;
+    display: block;
+}
+
+.cards p{
+    cursor: default;
+    border-radius: 20px;
+    padding: 3px 12px;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-card-indus);
+}
+
+.cards h1{
+    font-size: 26px;
+}
+
+.cards h4{
+    margin: -5px 0 5px 0;
+}
+

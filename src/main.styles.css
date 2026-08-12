@@ -17,10 +17,18 @@ body {
   	/* Color */
   	--color-gray-100: #0d1935;
   	--color-gray-200: rgba(255, 255, 255, 0.6);
-  	--color-white: #fff;
+	--color-border: #4D4D4D;
 
-	--main-blue:#070e1f;
-	/* --second-blue:; */
+  	--color-white: #fff;
+	--color-accent: #0D67EF;
+	
+	--color-filter: #0C1324;
+	
+	--color-card: #0D1C40;
+	--color-card-indus: #1C2B50;
+
+	--main-bg:#070e1f;
+
   	
   	/* Font */
   	--font-plus-jakarta-sans: Plus Jakarta Sans, Arial, sans-serif;
@@ -29,7 +37,6 @@ body {
 	/* Margins */
 
 	--home-margin: 15px;
-  	
+
+
 }
-
-

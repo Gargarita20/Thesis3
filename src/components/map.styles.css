@@ -1,0 +1,29 @@
+.map{
+    border: 2px solid var(--color-gray-200);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    border-radius: 30px;
+    margin: var(--home-margin);
+
+    height: auto;
+    
+}
+
+.map-wrapper{
+    width: 100%;
+    min-width: 100%;
+
+}
+
+.map-wrapper svg{
+    /* border: 2px solid orange; */
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
+    height: auto;
+    /* background-color: green; */
+}
+
+
