@@ -1,8 +1,10 @@
 import './switch.style.css'
 
-function Switch(){
+
+
+function Switch(props){
     return(
-        <label class="switch">
+        <label className="switch">
             <input type="checkbox" />
             <span className='slider'></span>
         </label>

@@ -1,0 +1,26 @@
+.ph-map{
+    border: 2px solid var(--color-gray-200);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    height: 60vh;
+
+    overflow: hidden;
+    margin: var(--home-margin);
+}
+
+.ph-map-wrapper{
+    width: 100%;
+    min-width: 100%;
+}
+
+.ph-map-wrapper svg{
+    /* border: 2px solid orange; */
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
+    height: auto;
+    /* background-color: green; */
+    transform: translateX(150px);
+}

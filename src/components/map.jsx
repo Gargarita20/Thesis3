@@ -1,6 +1,6 @@
 import './map.styles.css'
 
-function Map(){
+function IntMap(){
     return (
         <div className="map">
             <div className="map-wrapper">
@@ -79,4 +79,4 @@ function Map(){
     );
 }
 
-export default Map;
+export default IntMap;

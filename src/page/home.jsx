@@ -1,13 +1,34 @@
 import './home.styles.css'
 import Switch from '../components/switch';
-import Map from '../components/map';
+import IntMap from '../components/map';
+import PhMap from '../components/phmap';
 import Filters from '../components/filters';
 import Cards from '../components/cards';
+import { useState } from 'react';
+
 
 function Home(){
     const num_partners = 3;
     const scope_desc = "Local";
 
+    const [scope, setScope] = useState("Local");
+    // if !checked = "Local" then display Local Map
+    // else checked = "International" then display 
+
+    // const [filter, setFilter] = useState({
+    //     All: "All",
+    //     Luzon: "Luzon",
+    //     Visayas: "Visayas",
+    //     Mindanao: "Mindanao"
+    // })
+
+    const [filter, setFilter] = useState("All");
+    
+    const handleFilter = (e) =>{
+        setFilter(e.target.value);
+    };
+    
+    // console.log(filter);
 
     return(
         <div className="home">
@@ -26,22 +47,26 @@ function Home(){
                 </div>
             </div>
 
-        {/* Content here  */}
-            <Map/>
+            {/* <IntMap/> */}
+            <PhMap/>
+            
             <div className="partners">
                 <div className="header">
                     <h2>{num_partners} Partners</h2>
                     <div className="scope_description">
-                        <span>Globe Logo </span>
-                        <p>{scope_desc}</p>
+                        <span>Globe Logo</span>
+                        <p>{scope}</p>
                     </div>
                 </div>
                 
                 <div className="filter_wrapper">
-                    <Filters name="All" checked={true}/>
-                    <Filters name="Luzon"/>
-                    <Filters name="Visayas"/>
+                    <Filters name="All" checked={filter === "All"} change={handleFilter}/>
+                    <Filters name="Luzon" checked={filter === "Luzon"} change={handleFilter}/>
+                    <Filters name="Visayas" checked={filter === "Visayas"} change={handleFilter}/>
+                    <Filters name="Mindanao" checked={filter === "Mindanao"} change={handleFilter}/>                    
                 </div>
+
+                <div className="filter_wrapper"></div>
 
                 <div className="cards_wrapper" >
                     <Cards/>
