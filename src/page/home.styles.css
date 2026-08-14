@@ -29,11 +29,13 @@
 }
 
 .nav-left-icon{
-    width: 4vw;
-    height: 4vw;
+    width: 5vw;
+    height: 5vw;
     border-radius: 50px;
-    background-color: aquamarine;
-    
+    background-color: var(--color-accent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .nav-left-header{
@@ -67,6 +69,14 @@
     justify-content: center;
 }
 
+.home-map-wrapper {
+  display: grid;
+  grid-template-rows: 1fr;
+  
+  /* height: git; */
+  /* border: 2px solid red; */
+}
+
 .partners{
     /* border: 2px solid; */
     padding: var(--home-margin);
@@ -91,12 +101,23 @@
 }
 
 .scope_description{
-    /* border: 2px solid; */
-    display: inline-flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 150px; 
     opacity: 0.7;
     font-weight: 400;
+    padding: 6px 0;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
 }
+
+.scope_description .scope_p{
+   padding: 0 5px;
+   perspective: 1500;
+   
+}
+
 
 .partners .filter_wrapper{
     /* border: 2px solid black; */

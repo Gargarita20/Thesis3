@@ -1,26 +1,21 @@
 .ph-map{
     border: 2px solid var(--color-gray-200);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border-radius: 30px;
-    height: 60vh;
-
+    max-height: 28em;
     overflow: hidden;
     margin: var(--home-margin);
+    opacity: 1;
+    transition: all 1.5s cubic-bezier(0.215, 0.610, 0.355, 1)
 }
 
-.ph-map-wrapper{
-    width: 100%;
-    min-width: 100%;
+@starting-style{
+    .ph-map svg{
+        opacity: 0;
+        transform: scale(1.1);
+    }
+
 }
 
 .ph-map-wrapper svg{
-    /* border: 2px solid orange; */
-    max-width: 100%;
-    min-width: 100%;
-    width: 100%;
-    height: auto;
-    /* background-color: green; */
-    transform: translateX(150px);
+    transition: all 1.5s cubic-bezier(0.215, 0.610, 0.355, 1)
 }

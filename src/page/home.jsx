@@ -4,16 +4,16 @@ import IntMap from '../components/map';
 import PhMap from '../components/phmap';
 import Filters from '../components/filters';
 import Cards from '../components/cards';
+import Building_icon from '../components/building-icon';
+import Location_icon from '../components/location-icon';
 import { useState } from 'react';
-
+import { motion, AnimatePresence } from 'framer-motion';
 
 function Home(){
-    const num_partners = 3;
-    const scope_desc = "Local";
+    let num_partners = 3;
 
-    const [scope, setScope] = useState("Local");
-    // if !checked = "Local" then display Local Map
-    // else checked = "International" then display 
+    let scope_desc = "Local";
+    const [scope, setScope] = useState(false);
 
     // const [filter, setFilter] = useState({
     //     All: "All",
@@ -21,6 +21,16 @@ function Home(){
     //     Visayas: "Visayas",
     //     Mindanao: "Mindanao"
     // })
+
+    function handleScope(event){
+        !setScope(event.target.checked);
+    }
+
+    if (scope == false){
+        scope_desc = "Local";
+    }else{
+        scope_desc = "International";
+    }
 
     const [filter, setFilter] = useState("All");
     
@@ -35,7 +45,7 @@ function Home(){
             <div className='nav'>
                 <div className='nav-left'>
                     <div className="nav-left-icon">
-                        {/* icon here */}
+                        <span><Building_icon/></span>             
                     </div>
                     <div className="nav-left-header">
                         <h2>CIT Partnerships</h2>
@@ -43,19 +53,35 @@ function Home(){
                     </div>
                 </div>
                 <div className="nav-right">
-                    <Switch/>
+                    <Switch switch={scope} onchange={handleScope}/>
                 </div>
             </div>
-
-            {/* <IntMap/> */}
-            <PhMap/>
-            
+                {/* Map */}
+            <div className='home-map-wrapper'>
+                {scope ? <IntMap/> : <PhMap/>}
+            </div>
+                
             <div className="partners">
                 <div className="header">
                     <h2>{num_partners} Partners</h2>
                     <div className="scope_description">
-                        <span>Globe Logo</span>
-                        <p>{scope}</p>
+                        <span><Location_icon/></span>
+                        <motion.div
+                            key={scope ? 'int-map' : 'ph-map'}
+                            initial={{ rotateX: -90, opacity: 0 }}
+                            animate={{ rotateX: 0, opacity: 1 }}
+                            exit={{ rotateX: 90, opacity: 0 }}
+                            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                            style={{
+                                transformOrigin: 'center center',
+                                transformStyle: 'preserve-3d',
+                                backfaceVisibility: 'hidden',
+                            }}
+                            >
+                        <div className="scope_p">
+                            <p key={scope_desc}>{scope_desc}</p>
+                        </div>
+                        </motion.div>
                     </div>
                 </div>
                 

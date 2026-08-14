@@ -1,29 +1,22 @@
 .map{
     border: 2px solid var(--color-gray-200);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50vh;
+    overflow: hidden;
     border-radius: 30px;
     margin: var(--home-margin);
-
-    height: auto;
-    
+    max-height: 28em;
+    opacity: 1;
+    transition: all 1.5s cubic-bezier(0.215, 0.610, 0.355, 1)
 }
 
-.map-wrapper{
-    width: 100%;
-    min-width: 100%;
-
+@starting-style{
+    .map-wrapper svg{
+        opacity: 0;
+        transform: scale(1.1);
+    }
 }
 
 .map-wrapper svg{
-    /* border: 2px solid orange; */
-    max-width: 100%;
-    min-width: 100%;
-    width: 100%;
-    height: auto;
-    /* background-color: green; */
+    transition: all 1.5s cubic-bezier(0.215, 0.610, 0.355, 1)
 }
 
 
