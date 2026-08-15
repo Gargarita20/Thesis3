@@ -89,18 +89,20 @@ p{
 	display: block;
 	
 	/* border: 2px solid blue; */
+	animation: breathe 10s ease-in-out infinite;
 }
 
-/* .philwrapper .click{
-	border: 2px solid red;
-	width: 100px;
-	height: 100px;
-	display: block;
-	position: absolute;
-	top: 100;
-	left: 0;
-
-} */
+@keyframes breathe {
+	0%{
+		transform: scale(1);
+	}
+	50%{
+		transform: scale(1.02);
+	}
+	100%{
+		transform: scale(1);
+	}
+}
 
 path, line, circle{
 	vector-effect: non-scaling-stroke;

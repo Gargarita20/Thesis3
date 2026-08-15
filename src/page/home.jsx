@@ -8,19 +8,34 @@ import Building_icon from '../components/building-icon';
 import Location_icon from '../components/location-icon';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useIdleTimer } from 'react-idle-timer';
+import { useNavigate } from 'react-router-dom';
+
+
+function detectIdle(){
+    const navigate = useNavigate();
+
+    const onIdle = () => {
+        navigate("/");
+    }
+
+    useIdleTimer({
+        onIdle,
+        timeout: 10000, // milliseconds
+        debounce: 500
+    });
+
+
+    return null;
+}
 
 function Home(){
+    // detectIdle();
+
     let num_partners = 3;
 
     let scope_desc = "Local";
     const [scope, setScope] = useState(false);
-
-    // const [filter, setFilter] = useState({
-    //     All: "All",
-    //     Luzon: "Luzon",
-    //     Visayas: "Visayas",
-    //     Mindanao: "Mindanao"
-    // })
 
     function handleScope(event){
         !setScope(event.target.checked);
@@ -38,7 +53,9 @@ function Home(){
         setFilter(e.target.value);
     };
     
-    // console.log(filter);
+
+
+
 
     return(
         <div className="home">
@@ -91,8 +108,6 @@ function Home(){
                     <Filters name="Visayas" checked={filter === "Visayas"} change={handleFilter}/>
                     <Filters name="Mindanao" checked={filter === "Mindanao"} change={handleFilter}/>                    
                 </div>
-
-                <div className="filter_wrapper"></div>
 
                 <div className="cards_wrapper" >
                     <Cards/>
