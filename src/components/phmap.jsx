@@ -5,7 +5,7 @@ function PhMap(){
         <div className="ph-map">
             <div className="ph-map-wrapper">
 
-<svg baseprofile="tiny" fill="#6f9c76" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width=".5" version="1.2" viewBox="-395 0 1870 1000" xmlns="http://www.w3.org/2000/svg">
+<svg baseProfile="tiny" fill="#6f9c76" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth=".5" version="1.2" viewBox="-395 0 1870 1000" xmlns="http://www.w3.org/2000/svg">
  <g id="features">
   <path d="M713.9 833.9l-0.4-0.2-0.8-1-0.4-1.1-0.4-2.3-0.7-1.4-0.2-0.5-0.2-2-0.3-0.2-0.5-0.1-1-0.4-0.4-0.1-0.2-0.2-0.1-0.6 0.1-0.6 0.2-0.6 0.3-0.5 0.3-0.2 0.4-0.6 0.3-2.7 0.3-0.8 0.5-0.2 0.4 0.2 0.3 0.3 0.2 0.5 0.9 0.8 0.9 0.7 0.8 0.8 0.3 1.2-0.3 6.9 0.1 1.2 0.4 0.8 0.1 0.5-0.2 0.5-0.3 0.7-0.4 1.2z m-25.2 70.7l0.3-0.2 1.9-1 0.8-0.6 0.1 0 0.7-0.9 4.6-10.6 0.2-0.2 0.4 0 0.3-0.1 0-0.4-0.1-0.5-0.1-2.8 0.1-0.5 1.7-5.2 0-1 0.3-0.2 0.2-0.3 0.2-0.3 0.1-0.4 0.3-1.5 0-0.7-0.2-0.5-0.3-0.4-0.4-0.5-0.4-0.6 0-0.4 0-0.6-0.1-1.1 0-0.6 0.1-0.7 0.3-0.7 0-0.6-1.2-1.9-1.3-2.5-1-0.9-0.5-0.1-0.6 0-0.5 0.1-1 0.5-0.4-0.3-0.5-0.3-1.2 0.1-2.5-0.4-1.4 0.2-0.5-0.1-0.7-0.2-0.8-0.5-1.8-1.8-0.7-0.5-1.3-0.7-0.5-0.3 0-1.1 0-0.3-0.3-0.2-0.5-0.2-0.4-0.1-0.2-0.1-0.1-0.2 0-0.4 0.2-0.4 0.4-0.3 0.4-0.5 0.3-1.3 0.2-2.8 0.5-1.2 0.9-5.4-0.1-0.8-0.4-0.9-1.3-1.5-0.3-0.7-0.3-2.5 0.9-3.4 5.5-6 0-2.5 0.2-0.2 0.3-0.2 1.3-0.4 0.3-0.2 0.1 0 0.3-0.4-0.1-0.2-0.2-0.2-0.2-0.7-0.2-3.1-0.3-0.9-0.7-0.7-1.9-1.1-0.7-0.7-0.7-0.8 0.1-0.3 0.6-1.4 0.6-0.9 0.2-0.4 0.1-1-0.4-2.4-0.1-1.9-0.3-1.4 0-0.8 0.4-2.8 1.7-5.7 0.1-0.7-0.2-0.6-0.5-0.6 0.1-0.5 0.4 0 0.4-0.2 0.2-0.3 0.2-0.4 0.2-1.2 0.4-1 0.3-1-0.1-1.3 0.7 0.3 0.5-0.1 0.6-0.1 0.6 0 0.6 0.1 1.5 0.4 0.7 0.1 1.1-0.8 0.7-1.5 0.4-1.7 0.1-2.1 0-0.7-0.2-0.7-0.7-1.8-0.2-0.8-0.3-1.8-0.4-1.6-1.9-4.4 0-0.1 16.1 0.1 27.2 0.1 5.8 0 0.5 1.5 0.7 1.5 1.2 1.1 1.5 0.7 1.1 0.4-0.1 0.7 0.5 1.5 0.8 1.4 1 0.9 1.6 1 0.2 0.3 0.2 0.6 1.3 1.8 1.3 0.8 2.7 0.3 1.2 0.4-0.4 1.2-0.2 1.2-0.2 2.6 0.3 1.3 1 2.7 0.4 2.5 0.4 1.2 0 1.1-0.6 1.1-0.6 0.4-0.6 0.2-0.4 0.4-0.2 0.8 0.2 0.2 1.2 0.9-0.4 1.3-0.1 2.5-0.6 1 0.5 0.3 1.7 1 0.4 0-0.3 1.1-1.3 1.6-0.2 1-0.2 0.4-0.4 0.2-0.5 0.1-0.4 0.2-0.3 0.5-1.1 2.9-0.3 0.6-1.8 1.6-0.8 1.2-0.4 1.5-0.1 1.9-0.8 1.1-1.8 0.2-2.1-0.4-1.6-0.7-1.3 1.2-0.8 1.6-0.3 1.6-0.1 1.4 0.3 0.6 1.4 1.2 0.5 0.5 0.2 0.9 0.1 1.1-0.1 1-0.4 0.4-1.6-0.6-1-1.5-1.2-3.5-1.4-1.5-1.6-0.8-1.1 0.4 0 2.3-0.3 0-0.2-0.3-0.6-0.8-0.2 1.1 0.6 1.2 0.7 1.1 0.8 1.9 1 0.9 1 0.7 0.6 0.5 0.1 1.2-0.7 2.2-0.8 4.7-0.1 8-0.9 4.2-0.2 4.9-0.4 0.9-0.7-0.2-0.2-0.8-0.3-2.7-0.1-0.6-1.8-1.3-0.2-0.5-0.1-0.6 0.1-0.7 0-0.6-1.3-2.5-0.7-0.9-0.3-1.1-0.7-6.7 0.1-1.3 0.7-3.4-0.1-1.1-0.5-2-0.2-1.1 0-1.5-0.2-0.6-0.6-0.3-1.4-0.4-1-0.6-2.1-2.9-0.3-1 0.4-2.5 0.1-1.1-0.6-1.2-1.1-1.1-2.2-2-0.6-0.9-0.3-0.8-0.3-2.2-2.2-5.2 0-2.2 0.1-1.2 0-1.1-0.4-0.7-0.8-0.2-0.3-0.1-0.9 0.2-3.3 2.4-3.1 1.8-0.6 0.5-0.5 0.4-0.6 1.1-0.1 1.2 0.2 3.5 0 1.1-0.2 0.5-0.5 0.7-0.1 0.5-0.2 0.5-2 1.9-1.5 0.8-1.8 0.4-1.7 0.9-1.2 1.9-0.1 2.4-0.2 1.2-0.6 0.5-2.4 2.9-1.2 2.1-0.8 2.3-0.4 2.5-0.2 2.6 0.2 0.9 0.7 2.1 0.2 1.1 0.4 0.5 0.9 0.4 0.7-0.4-0.1-1.5 1.7 1.2 2.3 3 1.4 1.4 1.1-0.6 1 0.4 0.9 0.9 0.4 1 0 2.1 0.2 0.8 1.6 3.3 0.6 0.8 0.2 0.4 0 0.6-0.1 1.2 0.1 0.6 0.2 0.4 0.5 0.7 2.6 7 0.2 0.9 0 1.2-0.2 1.1-0.6 1-0.2 0.6 0.4 1.1-0.2 0.5-0.2 0.5-0.4 1.6-0.9 2.2-3.9 4.8-5.2 7.3-3.3 5.9-0.8 1-1 0.9-0.8 0.4-0.9 0.1-2.6-0.2-0.8-0.2-0.1-0.2z m6 11.6l-0.3 0-0.7-0.2-1 0.1-0.9 0.2-0.7-0.3-0.4-0.5-0.5-0.3 0-0.3 0.4-0.4 0.9-1.2 1-0.5 1.5 0 0.7 0.3 0.2 0.3 0.2 0.7-0.1 1.6-0.3 0.5z" id="PH11" name="Davao">
   </path>
@@ -43,47 +43,47 @@ function PhMap(){
   </path>
  </g>
  <g id="points">
-  <circle class="5.479040784343548|117.43806399941874" cx="266.9" cy="910.2" id="0">
+  <circle className="5.479040784343548|117.43806399941874" cx="266.9" cy="910.2" id="0">
   </circle>
-  <circle class="12.065710738147937|122.26944421015901" cx="525.9" cy="552.7" id="1">
+  <circle className="12.065710738147937|122.26944421015901" cx="525.9" cy="552.7" id="1">
   </circle>
-  <circle class="20.299048180403425|126.13454837875122" cx="733.1" cy="92.6" id="2">
+  <circle className="20.299048180403425|126.13454837875122" cx="733.1" cy="92.6" id="2">
   </circle>
  </g>
  <g id="label_points">
-  <circle class="Davao" cx="734.6" cy="798.5" id="PH11">
+  <circle className="Davao" cx="734.6" cy="798.5" id="PH11">
   </circle>
-  <circle class="Caraga" cx="710.9" cy="737.7" id="PH13">
+  <circle className="Caraga" cx="710.9" cy="737.7" id="PH13">
   </circle>
-  <circle class="Northern Mindanao" cx="669.7" cy="763.8" id="PH10">
+  <circle className="Northern Mindanao" cx="669.7" cy="763.8" id="PH10">
   </circle>
-  <circle class="Autonomous Region in Muslim Mindanao" cx="631.6" cy="829.4" id="PH14">
+  <circle className="Autonomous Region in Muslim Mindanao" cx="631.6" cy="829.4" id="PH14">
   </circle>
-  <circle class="Zamboanga Peninsula" cx="578" cy="772.9" id="PH09">
+  <circle className="Zamboanga Peninsula" cx="578" cy="772.9" id="PH09">
   </circle>
-  <circle class="Mimaropa" cx="321.1" cy="693" id="PH41">
+  <circle className="Mimaropa" cx="321.1" cy="693" id="PH41">
   </circle>
-  <circle class="Calabarzon" cx="480.5" cy="436.2" id="PH40">
+  <circle className="Calabarzon" cx="480.5" cy="436.2" id="PH40">
   </circle>
-  <circle class="Eastern Visayas" cx="676.5" cy="551.8" id="PH08">
+  <circle className="Eastern Visayas" cx="676.5" cy="551.8" id="PH08">
   </circle>
-  <circle class="Bicol" cx="583.3" cy="470.8" id="PH05">
+  <circle className="Bicol" cx="583.3" cy="470.8" id="PH05">
   </circle>
-  <circle class="Central Luzon" cx="447.8" cy="372.4" id="PH03">
+  <circle className="Central Luzon" cx="447.8" cy="372.4" id="PH03">
   </circle>
-  <circle class="Cagayan Valley" cx="512.2" cy="280" id="PH02">
+  <circle className="Cagayan Valley" cx="512.2" cy="280" id="PH02">
   </circle>
-  <circle class="National Capital Region" cx="459.8" cy="411.7" id="PH00">
+  <circle className="National Capital Region" cx="459.8" cy="411.7" id="PH00">
   </circle>
-  <circle class="Cordillera Administrative Region" cx="463.2" cy="251" id="PH15">
+  <circle className="Cordillera Administrative Region" cx="463.2" cy="251" id="PH15">
   </circle>
-  <circle class="Ilocos" cx="436.6" cy="277.1" id="PH01">
+  <circle className="Ilocos" cx="436.6" cy="277.1" id="PH01">
   </circle>
-  <circle class="Central Visayas" cx="612.3" cy="638" id="PH07">
+  <circle className="Central Visayas" cx="612.3" cy="638" id="PH07">
   </circle>
-  <circle class="Western Visayas" cx="535.1" cy="601.7" id="PH06">
+  <circle className="Western Visayas" cx="535.1" cy="601.7" id="PH06">
   </circle>
-  <circle class="Soccsksargen" cx="662.6" cy="866.9" id="PH12">
+  <circle className="Soccsksargen" cx="662.6" cy="866.9" id="PH12">
   </circle>
  </g>
 </svg>

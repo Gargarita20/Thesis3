@@ -7,7 +7,7 @@ function Cards(prop){
     const company = "Honda Inc.";
     const address = "Japan";
     const industry = "Automotive Tech";
-
+    const qr_link = "sample";
     
 
     return (

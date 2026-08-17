@@ -1,9 +1,9 @@
 .map{
     border: 2px solid var(--color-gray-200);
-    overflow: hidden;
+    /* overflow: hidden; */
     border-radius: 30px;
     margin: var(--home-margin);
-    max-height: 28em;
+    /* max-height: 28em; */
     opacity: 1;
     transition: all 1.5s cubic-bezier(0.215, 0.610, 0.355, 1)
 }
@@ -16,7 +16,6 @@
 }
 
 .map-wrapper svg{
-    transition: all 1.5s cubic-bezier(0.215, 0.610, 0.355, 1)
+    transition: all 1.5s cubic-bezier(0.215, 0.610, 0.355, 1);
+    /* border: 2px solid orange; */
 }
-
-

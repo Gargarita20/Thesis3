@@ -1,7 +1,7 @@
 .ph-map{
     border: 2px solid var(--color-gray-200);
     border-radius: 30px;
-    max-height: 28em;
+    /* max-height: 28em; */
     overflow: hidden;
     margin: var(--home-margin);
     opacity: 1;

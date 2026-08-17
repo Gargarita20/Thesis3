@@ -29,8 +29,8 @@
 }
 
 .nav-left-icon{
-    width: 5vw;
-    height: 5vw;
+    width: 3.2rem;
+    height: 3.2rem;
     border-radius: 50px;
     background-color: var(--color-accent);
     display: flex;
@@ -72,10 +72,18 @@
 .home-map-wrapper {
   display: grid;
   grid-template-rows: 1fr;
+  /* height: 30vh; */
+  min-height: 600px;
   
-  /* height: git; */
   /* border: 2px solid red; */
 }
+
+@media screen and (height < 1920px ) {
+    .home-map-wrapper {
+        min-height: 500px;
+    }
+}
+
 
 .partners{
     /* border: 2px solid; */
