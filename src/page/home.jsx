@@ -6,7 +6,7 @@ import Filters from '../components/filters';
 import Cards from '../components/cards';
 import Building_icon from '../components/building-icon';
 import Location_icon from '../components/location-icon';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIdleTimer } from 'react-idle-timer';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +28,8 @@ function detectIdle(){
 
     return null;
 }
+
+
 
 function Home(){
     // detectIdle();
@@ -53,9 +55,16 @@ function Home(){
         setFilter(e.target.value);
     };
     
+    const back_port = 3000;
+    const [records, getRecords] = useState([]);
 
+    useEffect(() => {
+        fetch(`http://localhost:${back_port}/api/records`)
+        .then(res => res.json())
+        .then(data => getRecords(data));
+    }, []);
 
-
+    // console.log(records) //records is array, points to line 74
 
     return(
         <div className="home">
@@ -80,7 +89,7 @@ function Home(){
                 
             <div className="partners">
                 <div className="header">
-                    <h2>{num_partners} Partners</h2>
+                    <h2>{records.length || 0} Partners</h2>
                     <div className="scope_description">
                         <span><Location_icon/></span>
                         <motion.div
@@ -110,13 +119,12 @@ function Home(){
                 </div>
 
                 <div className="cards_wrapper" >
-                    <Cards/>
-                    <Cards/>
-                    <Cards/>
-                    <Cards/>
-                    <Cards/>
-                    <Cards/>
-                    <Cards/>
+                    {records.map(r => <Cards key={r.id} 
+                    company={r.Partner_Industry} 
+                    address={r.Address} 
+                    industry={r.Deptmt}
+                    link={r.Link}/>
+                    )}
                 </div>
 
             </div>

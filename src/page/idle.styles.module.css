@@ -78,7 +78,7 @@ p{
 	display: block;
 	
 	/* border: 2px solid blue; */
-	animation: breathe 10s ease-in-out infinite;
+	/* animation: breathe 10s ease-in-out infinite; */
 }
 
 @keyframes breathe {
@@ -151,7 +151,7 @@ path, line, circle{
   	font-weight: 600;
   	flex-shrink: 0;
 	transition: 300ms ease-in-out;
-	border: 2px solid green;
+	/* border: 2px solid green; */
 	
 }
 

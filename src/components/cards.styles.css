@@ -31,6 +31,7 @@
 
 .cards .icon{
     width: 3em;
+    min-width: 3em;
     height: 3em;
     border-radius: 50px;
     background-color: red;
@@ -47,7 +48,8 @@
     flex-grow: 1;
 
     flex-direction: column;
-    border: 2pxs solid brown;
+    /* border: 2px solid brown; */
+    min-width: 512px;
 }
 
 .cards .qrcode{
@@ -55,7 +57,7 @@
     display: flex;
     align-items: center;
     justify-content:flex-end;
-    flex-grow: 1;
+    /* flex-grow: 1; */
 }
 
 .cards .qrcode-wrapper{
@@ -65,10 +67,14 @@
     border-radius: 12px;
 }
 
-.cards h1,h4,p{
+.cards h1,h5,p{
     margin: 0;
     width: fit-content;
     display: block;
+}
+
+.cards h5{
+    margin-bottom: 16px;
 }
 
 .cards p{

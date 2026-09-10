@@ -16,13 +16,13 @@ function Cards(prop){
                 <div className="icon">{icon}</div>
                 <div className="description">
                     <h1 className="company">{prop.company}</h1>
-                    <h4 className="address">{prop.address}</h4>
+                    <h5 className="address">{prop.address}</h5>
                     <p className="industry">{prop.industry}</p>
                 </div>
             </div>
             <div className="qrcode">
                 <div className="qrcode-wrapper">
-                    <QRCode value='WHATS UP CUHHZ' size={100}/>
+                    <QRCode value={prop.link} size={100}/>
                 </div>
             </div>
         </div>
