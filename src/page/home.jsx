@@ -6,11 +6,10 @@ import Filters from '../components/filters';
 import Cards from '../components/cards';
 import Building_icon from '../components/building-icon';
 import Location_icon from '../components/location-icon';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIdleTimer } from 'react-idle-timer';
 import { useNavigate } from 'react-router-dom';
-
 
 function detectIdle(){
     const navigate = useNavigate();
@@ -40,7 +39,7 @@ function Home(){
     const [scope, setScope] = useState(false);
 
     function handleScope(event){
-        !setScope(event.target.checked);
+        setScope(event.target.checked);
     }
 
     if (scope == false){
@@ -65,6 +64,65 @@ function Home(){
     }, []);
 
     // console.log(records) //records is array, points to line 74
+
+    // speech-to-text
+    const [text, setText] = useState("");
+    const [isListening, setIsListening] = useState(false);
+    const [error, setError] = useState("");
+
+    const recognitionRef = useRef(null);
+
+    const startListening = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      setError("Speech recognition is not supported in this browser.");
+      return;
+    }
+
+    setError("");
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "fil-PH";
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onresult = (event) => {
+      let transcript = "";
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+
+      setText(transcript);
+    };
+
+    recognition.onerror = (event) => {
+      setError(`Speech recognition error: ${event.error}`);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+  };
+
+    const stopListening = () => {
+        recognitionRef.current?.stop();
+        setIsListening(false);
+    };
+
+    // end of speech-to-text
 
     return(
         <div className="home">
@@ -111,6 +169,21 @@ function Home(){
                     </div>
                 </div>
                 
+                {!isListening ? (<button onClick={startListening}>Start Speaking</button>) : 
+                (<button onClick={stopListening}>Stop</button>)
+                }
+
+                <textarea
+                    value={text} 
+                    onChange={(event) => setText(event.target.value)} 
+                    placeholder='Spoke here'
+                    rows={6}
+                    cols={10}
+                />
+
+                {isListening && <p>Listening...</p>}
+                {error && <p style={{ color: "red" }}>{error}</p>}
+                            
                 <div className="filter_wrapper">
                     <Filters name="All" checked={filter === "All"} change={handleFilter}/>
                     <Filters name="Luzon" checked={filter === "Luzon"} change={handleFilter}/>

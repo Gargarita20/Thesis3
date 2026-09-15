@@ -1,6 +1,8 @@
 .cards{
     background-color: var(--color-card);
     border-radius: 20px;
+    content-visibility: auto;
+    contain-intrinsic-size: 150px;
     display: flex;
     flex-direction:row;
     justify-content: space-between;
@@ -62,6 +64,8 @@
 
 .cards .qrcode-wrapper{
     margin-right: 20px;
+    width: 100px;
+    height: 100px;
     /* background-color: rgb(59, 59, 133); */
     padding: 20px 5px 5px 5px;
     border-radius: 12px;

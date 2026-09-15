@@ -1,6 +1,37 @@
-import { Children, useState, useEffect } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import './cards.styles.css'
 import QRCode from 'react-qr-code';
+
+function LazyQRCode({ value }) {
+    const [isVisible, setIsVisible] = useState(false);
+    const wrapperRef = useRef(null);
+
+    useEffect(() => {
+        if (!('IntersectionObserver' in window)) {
+            setIsVisible(true);
+            return;
+        }
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: '300px' }
+        );
+
+        observer.observe(wrapperRef.current);
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <div className="qrcode-wrapper" ref={wrapperRef}>
+            {isVisible && <QRCode value={value || ''} size={100} />}
+        </div>
+    );
+}
 
 function Cards(prop){
     const icon = "H";
@@ -21,9 +52,7 @@ function Cards(prop){
                 </div>
             </div>
             <div className="qrcode">
-                <div className="qrcode-wrapper">
-                    <QRCode value={prop.link} size={100}/>
-                </div>
+                <LazyQRCode value={prop.link} />
             </div>
         </div>
 
@@ -31,4 +60,4 @@ function Cards(prop){
     );
 }
 
-export default Cards;
+export default memo(Cards);

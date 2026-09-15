@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import './map.styles.css'
 
 function IntMap(){
@@ -79,4 +80,4 @@ function IntMap(){
     );
 }
 
-export default IntMap;
+export default memo(IntMap);

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import "./phmap.styles.css"
 
 function PhMap(){
@@ -92,4 +93,4 @@ function PhMap(){
     );
 }
 
-export default PhMap;
+export default memo(PhMap);
