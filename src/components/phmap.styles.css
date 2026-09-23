@@ -1,7 +1,6 @@
 .ph-map{
     border: 2px solid var(--color-gray-200);
     border-radius: 30px;
-    /* max-height: 28em; */
     overflow: hidden;
     margin: var(--home-margin);
     opacity: 1;
@@ -11,11 +10,69 @@
 @starting-style{
     .ph-map svg{
         opacity: 0;
-        /* transform: scale(1.1); */
     }
-
 }
 
-.ph-map-wrapper svg{
-    transition: all 1.5s cubic-bezier(0.215, 0.610, 0.355, 1)
+.ph-map-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
+
+.ph-map-wrapper svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: all 1.5s cubic-bezier(0.215, 0.610, 0.355, 1);
+}
+
+.province {
+    cursor: pointer;
+    transition: fill 0.2s ease, stroke 0.2s ease, filter 0.2s ease, transform 0.2s ease;
+    transform-box: fill-box;
+    transform-origin: center;
+    will-change: fill, filter, transform;
+}
+
+.province:hover,
+.province:focus-visible,
+.province.island-group-active {
+    fill: #8eb58e;
+    filter: drop-shadow(0 6px 12px rgba(39, 90, 52, 0.18));
+    stroke: #f8fafc;
+    stroke-width: 1;
+}
+
+.province.island-group-muted {
+    opacity: 0.55;
+    filter: saturate(0.7);
+}
+
+.province-tooltip {
+    position: absolute;
+    z-index: 10;
+    pointer-events: none;
+    background: rgba(15, 23, 42, 0.9);
+    color: #f8fafc;
+    padding: 0.4rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+    transform-origin: center bottom;
+}
+
+.province-tooltip::after {
+    content: "";
+    position: absolute;
+    left: 18px;
+    bottom: -8px;
+    width: 10px;
+    height: 10px;
+    background: rgba(15, 23, 42, 0.9);
+    transform: rotate(45deg);
+    border-radius: 2px;
+}
+

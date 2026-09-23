@@ -41,10 +41,10 @@ function Idle() {
       const targetPath = svg.querySelector(`#features path[id="${regionId}"]`)
       if (!targetPath) return
 
-      targetPath.style.fill = '#2c834d'
+      targetPath.style.fill = '#61ad80'
       targetPath.style.stroke = '#f8fafc'
       targetPath.style.strokeWidth = '1.2'
-      targetPath.style.filter = 'drop-shadow(0 0 10px rgba(10, 73, 48, 0.87))'
+      targetPath.style.filter = 'drop-shadow(0 0 10px rgba(95, 167, 139, 0.87))'
       targetPath.style.opacity = '1'
     }
 

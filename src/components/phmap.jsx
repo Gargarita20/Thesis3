@@ -1,10 +1,153 @@
-import { memo } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import "./phmap.styles.css"
 
 function PhMap(){
+    const mapRef = useRef(null);
+    const [hoveredProvince, setHoveredProvince] = useState(null);
+
+    const getIslandGroup = (provinceName = '') => {
+        const name = provinceName.trim();
+        const luzonRegions = new Set([
+            'National Capital Region',
+            'Cordillera Administrative Region',
+            'Ilocos',
+            'Cagayan Valley',
+            'Central Luzon',
+            'Calabarzon',
+            'Mimaropa',
+            'Bicol',
+        ]);
+
+        const visayasRegions = new Set([
+            'Western Visayas',
+            'Central Visayas',
+            'Eastern Visayas',
+        ]);
+
+        const mindanaoRegions = new Set([
+            'Zamboanga Peninsula',
+            'Northern Mindanao',
+            'Davao',
+            'Soccsksargen',
+            'Caraga',
+            'Autonomous Region in Muslim Mindanao',
+        ]);
+
+        if (luzonRegions.has(name)) return 'Luzon';
+        if (visayasRegions.has(name)) return 'Visayas';
+        if (mindanaoRegions.has(name)) return 'Mindanao';
+
+        if (name.includes('Luzon')) return 'Luzon';
+        if (name.includes('Visayas')) return 'Visayas';
+        if (name.includes('Mindanao') || name.includes('Davao') || name.includes('Zamboanga') || name.includes('Caraga')) return 'Mindanao';
+
+        return 'Luzon';
+    };
+
+    useEffect(() => {
+        const svg = mapRef.current?.querySelector('svg');
+
+        if (!svg) return;
+
+        const provincePaths = svg.querySelectorAll('path');
+
+        const setIslandGroupHighlight = (groupName) => {
+            provincePaths.forEach((path) => {
+                const pathGroup = path.dataset.islandGroup || getIslandGroup(path.getAttribute('name') || path.getAttribute('id') || 'Province');
+                const isMatch = pathGroup === groupName;
+
+                path.classList.toggle('island-group-active', isMatch);
+                path.classList.toggle('island-group-muted', Boolean(groupName) && !isMatch);
+            });
+        };
+
+        const clearIslandGroupHighlight = () => {
+            provincePaths.forEach((path) => {
+                path.classList.remove('island-group-active', 'island-group-muted');
+            });
+        };
+
+        const attachProvinceHandlers = () => {
+            provincePaths.forEach((path) => {
+                if (!path.classList.contains('province')) {
+                    path.classList.add('province');
+                }
+
+                const provinceName = path.getAttribute('name') || path.getAttribute('id') || 'Province';
+                const islandGroup = getIslandGroup(provinceName);
+                path.dataset.islandGroup = islandGroup;
+
+                const showTooltip = (event) => {
+                    const bounds = mapRef.current.getBoundingClientRect();
+                    setHoveredProvince({
+                        name: islandGroup,
+                        x: event.clientX - bounds.left + 12,
+                        y: event.clientY - bounds.top - 18,
+                    });
+                    setIslandGroupHighlight(islandGroup);
+                };
+
+                const moveTooltip = (event) => {
+                    const bounds = mapRef.current.getBoundingClientRect();
+                    setHoveredProvince((current) =>
+                        current ? { ...current, x: event.clientX - bounds.left + 12, y: event.clientY - bounds.top - 18 } : current
+                    );
+                };
+
+                const hideTooltip = () => {
+                    setHoveredProvince(null);
+                    clearIslandGroupHighlight();
+                };
+
+                path.addEventListener('pointerenter', showTooltip);
+                path.addEventListener('pointermove', moveTooltip);
+                path.addEventListener('pointerleave', hideTooltip);
+
+                path._provinceHandlers = { showTooltip, moveTooltip, hideTooltip };
+            });
+        };
+
+        const removeProvinceHandlers = () => {
+            provincePaths.forEach((path) => {
+                const handlers = path._provinceHandlers;
+                if (!handlers) return;
+
+                path.removeEventListener('pointerenter', handlers.showTooltip);
+                path.removeEventListener('pointermove', handlers.moveTooltip);
+                path.removeEventListener('pointerleave', handlers.hideTooltip);
+                delete path._provinceHandlers;
+            });
+        };
+
+        attachProvinceHandlers();
+
+        return () => {
+            clearIslandGroupHighlight();
+            removeProvinceHandlers();
+        };
+    }, []);
+
     return (
         <div className="ph-map">
-            <div className="ph-map-wrapper">
+            <div className="ph-map-wrapper" ref={mapRef}>
+                <AnimatePresence>
+                    {hoveredProvince && (
+                        <motion.div
+                            className="province-tooltip"
+                            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 12, scale: 0.96 }}
+                            transition={{ duration: 0.2, ease: 'easeOut' }}
+                            style={{
+                                left: hoveredProvince.x,
+                                top: hoveredProvince.y,
+                            }}
+                        >
+                            {hoveredProvince.name}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
 <svg baseProfile="tiny" fill="#6f9c76" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" strokeWidth=".5" version="1.2" viewBox="-395 0 1870 1000" xmlns="http://www.w3.org/2000/svg">
  <g id="features">
