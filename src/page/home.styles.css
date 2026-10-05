@@ -135,7 +135,8 @@
     /* border: 2px solid black; */
 
     display: inline-flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .partners .cards_wrapper{
@@ -147,5 +148,33 @@
     overflow: auto;
     border-radius: 20px;
     border: 1px solid var(--color-border);
+
+    position: relative;
     
+}
+
+.listen_wrapper{
+    display: flex;
+    /* position: absolute; */
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    z-index: 1;
+    justify-content: flex-start;
+    align-items: end;
+    /* border: 2px solid black; */
+    margin: 1em;
+    flex-direction: row-reverse;
+    gap: 8px;
+
+}
+
+.listenBtn{
+    border-radius: 50%;
+    padding: 12px;
+    /* background-color: green; */
+    outline: none;
+    border: none;
+    width: max-content;
+    height: auto;
 }

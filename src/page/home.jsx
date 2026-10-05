@@ -7,9 +7,12 @@ import Cards from '../components/cards';
 import Building_icon from '../components/building-icon';
 import Location_icon from '../components/location-icon';
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useIdleTimer } from 'react-idle-timer';
 import { useNavigate } from 'react-router-dom';
+
+import mic from '../media/mic.png';
+import stop from '../media/stop.png';
 
 function detectIdle(){
     const navigate = useNavigate();
@@ -56,6 +59,10 @@ function Home(){
     
     const back_port = 3000;
     const [records, getRecords] = useState([]);
+
+    const filteredRecords = filter === "All"
+        ? records
+        : records.filter(record => String(record.Deptmt ?? '').trim().toLowerCase() === filter.trim().toLowerCase());
 
     useEffect(() => {
         fetch(`http://localhost:${back_port}/api/records`)
@@ -115,7 +122,7 @@ function Home(){
 
     recognitionRef.current = recognition;
     recognition.start();
-  };
+    };
 
     const stopListening = () => {
         recognitionRef.current?.stop();
@@ -147,8 +154,9 @@ function Home(){
                 
             <div className="partners">
                 <div className="header">
-                    <h2>{records.length || 0} Partners</h2>
+                    <h2>{filteredRecords.length || 0} Partners</h2>
                     <div className="scope_description">
+                        {/* Scope Label */}
                         <span><Location_icon/></span>
                         <motion.div
                             key={scope ? 'int-map' : 'ph-map'}
@@ -169,35 +177,42 @@ function Home(){
                     </div>
                 </div>
                 
-                {!isListening ? (<button onClick={startListening}>Start Speaking</button>) : 
-                (<button onClick={stopListening}>Stop</button>)
-                }
-
-                <textarea
+            
+                {/* <textarea
                     value={text} 
                     onChange={(event) => setText(event.target.value)} 
                     placeholder='Spoke here'
                     rows={6}
                     cols={10}
-                />
+                /> */}
 
-                {isListening && <p>Listening...</p>}
-                {error && <p style={{ color: "red" }}>{error}</p>}
-                            
                 <div className="filter_wrapper">
                     <Filters name="All" checked={filter === "All"} change={handleFilter}/>
-                    <Filters name="Luzon" checked={filter === "Luzon"} change={handleFilter}/>
-                    <Filters name="Visayas" checked={filter === "Visayas"} change={handleFilter}/>
-                    <Filters name="Mindanao" checked={filter === "Mindanao"} change={handleFilter}/>                    
+                    <Filters name="Automotive" checked={filter === "Automotive"} change={handleFilter}/>
+                    <Filters name="Computer" checked={filter === "Computer"} change={handleFilter}/>
+                    <Filters name="Drafting" checked={filter === "Drafting"} change={handleFilter}/>
+                    <Filters name="Electrical" checked={filter === "Electrical"} change={handleFilter}/>
+                    <Filters name="Electronics" checked={filter === "Electronics"} change={handleFilter}/>
+                                  
                 </div>
 
                 <div className="cards_wrapper" >
-                    {records.map(r => <Cards key={r.id} 
+                    <div className="listen_wrapper">
+                        {!isListening ? (<button className='listenBtn' onClick={startListening}><img src={mic} alt='Mic'></img></button>) : 
+                        (<button onClick={stopListening} className='listenBtn'><img src={stop} alt='Stop'></img></button>)}
+
+                        {isListening && <p>Listening...</p>}
+                        {error && <p style={{ color: "red" }}>{error}</p>}   
+                    </div>
+
+                    {filteredRecords.map(r => <Cards key={r.id} 
                     company={r.Partner_Industry} 
                     address={r.Address} 
                     industry={r.Deptmt}
                     link={r.Link}/>
                     )}
+
+                    {/* <Cards company={"Company"} address={"Address"} industry={"Industry"} link={"Sample"} /> */}
                 </div>
 
             </div>
