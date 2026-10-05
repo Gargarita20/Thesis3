@@ -6,13 +6,8 @@ import Filters from '../components/filters';
 import Cards from '../components/cards';
 import Building_icon from '../components/building-icon';
 import Location_icon from '../components/location-icon';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useIdleTimer } from 'react-idle-timer';
-import { useNavigate } from 'react-router-dom';
-
-import mic from '../media/mic.png';
-import stop from '../media/stop.png';
 
 function detectIdle(){
     const navigate = useNavigate();
@@ -31,105 +26,63 @@ function detectIdle(){
     return null;
 }
 
-
-
 function Home(){
     // detectIdle();
 
-    let num_partners = 3;
-
-    let scope_desc = "Local";
     const [scope, setScope] = useState(false);
 
     function handleScope(event){
         setScope(event.target.checked);
+        setFilter("All");
     }
 
-    if (scope == false){
-        scope_desc = "Local";
-    }else{
-        scope_desc = "International";
-    }
+    const scope_desc = scope ? "International" : "Local";
 
     const [filter, setFilter] = useState("All");
     
     const handleFilter = (e) =>{
         setFilter(e.target.value);
     };
+
+    useEffect(() => {
+        const handleVoiceScope = (event) => {
+            setScope(event.detail);
+            setFilter("All");
+        };
+        const handleVoiceFilter = (event) => setFilter(event.detail);
+
+        window.addEventListener('voice-scope', handleVoiceScope);
+        window.addEventListener('voice-filter', handleVoiceFilter);
+
+        return () => {
+            window.removeEventListener('voice-scope', handleVoiceScope);
+            window.removeEventListener('voice-filter', handleVoiceFilter);
+        };
+    }, []);
     
     const back_port = 3000;
     const [records, getRecords] = useState([]);
 
-    const filteredRecords = filter === "All"
+    const filteredRecords = scope || filter === "All"
         ? records
         : records.filter(record => String(record.Deptmt ?? '').trim().toLowerCase() === filter.trim().toLowerCase());
 
     useEffect(() => {
-        fetch(`http://localhost:${back_port}/api/records`)
+        const controller = new AbortController();
+
+        fetch(`http://localhost:${back_port}${scope ? "/api/intRecords" : "/api/records"}`, { signal: controller.signal })
         .then(res => res.json())
-        .then(data => getRecords(data));
-    }, []);
+        .then(data => getRecords(data))
+        .catch(error => {
+            if (error.name !== "AbortError") {
+                console.error("Failed to fetch partner records:", error);
+            }
+        });
+
+        return () => controller.abort();
+    }, [scope]);
 
     // console.log(records) //records is array, points to line 74
-
-    // speech-to-text
-    const [text, setText] = useState("");
-    const [isListening, setIsListening] = useState(false);
-    const [error, setError] = useState("");
-
-    const recognitionRef = useRef(null);
-
-    const startListening = () => {
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      setError("Speech recognition is not supported in this browser.");
-      return;
-    }
-
-    setError("");
-
-    const recognition = new SpeechRecognition();
-
-    recognition.lang = "fil-PH";
-    recognition.continuous = false;
-    recognition.interimResults = true;
-    recognition.maxAlternatives = 1;
-
-    recognition.onstart = () => {
-      setIsListening(true);
-    };
-
-    recognition.onresult = (event) => {
-      let transcript = "";
-
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        transcript += event.results[i][0].transcript;
-      }
-
-      setText(transcript);
-    };
-
-    recognition.onerror = (event) => {
-      setError(`Speech recognition error: ${event.error}`);
-      setIsListening(false);
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-    };
-
-    recognitionRef.current = recognition;
-    recognition.start();
-    };
-
-    const stopListening = () => {
-        recognitionRef.current?.stop();
-        setIsListening(false);
-    };
-
-    // end of speech-to-text
 
     return(
         <div className="home">
@@ -186,29 +139,22 @@ function Home(){
                     cols={10}
                 /> */}
 
-                <div className="filter_wrapper">
-                    <Filters name="All" checked={filter === "All"} change={handleFilter}/>
-                    <Filters name="Automotive" checked={filter === "Automotive"} change={handleFilter}/>
-                    <Filters name="Computer" checked={filter === "Computer"} change={handleFilter}/>
-                    <Filters name="Drafting" checked={filter === "Drafting"} change={handleFilter}/>
-                    <Filters name="Electrical" checked={filter === "Electrical"} change={handleFilter}/>
-                    <Filters name="Electronics" checked={filter === "Electronics"} change={handleFilter}/>
-                                  
-                </div>
+                {!scope && (
+                    <div className="filter_wrapper">
+                        <Filters name="All" checked={filter === "All"} change={handleFilter}/>
+                        <Filters name="Automotive" checked={filter === "Automotive"} change={handleFilter}/>
+                        <Filters name="Computer" checked={filter === "Computer"} change={handleFilter}/>
+                        <Filters name="Drafting" checked={filter === "Drafting"} change={handleFilter}/>
+                        <Filters name="Electrical" checked={filter === "Electrical"} change={handleFilter}/>
+                        <Filters name="Electronics" checked={filter === "Electronics"} change={handleFilter}/>
+                    </div>
+                )}
 
                 <div className="cards_wrapper" >
-                    <div className="listen_wrapper">
-                        {!isListening ? (<button className='listenBtn' onClick={startListening}><img src={mic} alt='Mic'></img></button>) : 
-                        (<button onClick={stopListening} className='listenBtn'><img src={stop} alt='Stop'></img></button>)}
-
-                        {isListening && <p>Listening...</p>}
-                        {error && <p style={{ color: "red" }}>{error}</p>}   
-                    </div>
-
-                    {filteredRecords.map(r => <Cards key={r.id} 
-                    company={r.Partner_Industry} 
+                    {filteredRecords.map(r => <Cards key={`${scope ? 'international' : 'local'}-${r.ID ?? r.Partner_Industry ?? r.Industry}-${r.Address}`} 
+                    company={scope ? r.Industry : r.Partner_Industry} 
                     address={r.Address} 
-                    industry={r.Deptmt}
+                    industry={scope ? "International Partner" : r.Deptmt}
                     link={r.Link}/>
                     )}
 

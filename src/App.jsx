@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import { Routes, Route, useLocation } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion"
 import Idle from "./page/idle"
 import Home from "./page/home"
+import VoiceNavigation from "./components/VoiceNavigation"
 
 const PageWrapper = ({ children }) => (
   <motion.div
@@ -46,10 +47,10 @@ function MainContent() {
 
 
 function App() {
-  const location = useLocation();
-  return (
-    <MainContent/>
-  )
+  return <>
+    <MainContent />
+    <VoiceNavigation />
+  </>
 }
 
 
