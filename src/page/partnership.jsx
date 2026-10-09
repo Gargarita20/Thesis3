@@ -1,4 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
+import QRCode from 'react-qr-code';
+import PhilippinesMap from '../components/philippines-map';
+import InternationalMap from '../components/world-map';
 import './partnership.styles.css';
 
 function Partnership() {
@@ -33,6 +36,11 @@ function Partnership() {
                 <h1 id="partnership-title">{company || 'Unnamed partner'}</h1>
                 <p className="partnership-intro">Partnership information</p>
 
+                <h2 className="partnership-map-heading">Map location</h2>
+                {international
+                    ? <InternationalMap address={record.Address} detail />
+                    : <PhilippinesMap address={record.Address} detail />}
+
                 <dl className="partnership-facts">
                     <div>
                         <dt>Location</dt>
@@ -53,9 +61,13 @@ function Partnership() {
                 </dl>
 
                 {record.Link && (
-                    <a className="partnership-website" href={record.Link} target="_blank" rel="noreferrer">
-                        Visit partner website
-                    </a>
+                    <section className="partnership-qr" aria-labelledby="partnership-qr-title">
+                        <h2 id="partnership-qr-title">Partner website QR code</h2>
+                        <div className="partnership-qr-code" title="Scan to open the partner website">
+                            <QRCode value={record.Link} size={160} />
+                        </div>
+                        <p>Scan to open the partner website</p>
+                    </section>
                 )}
             </section>
         </main>

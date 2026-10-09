@@ -51,6 +51,11 @@
     color: var(--color-gray-200);
 }
 
+.partnership-map-heading {
+    margin: 0;
+    font-size: 18px;
+}
+
 .partnership-facts {
     margin: 0;
     border-top: 1px solid var(--color-border);
@@ -73,19 +78,34 @@
     overflow-wrap: anywhere;
 }
 
-.partnership-website {
-    display: inline-block;
+.partnership-qr {
+    display: grid;
+    justify-items: start;
+    gap: 12px;
     margin-top: 28px;
-    padding: 12px 18px;
-    border-radius: 6px;
-    color: var(--color-white);
-    background-color: var(--color-accent);
-    text-decoration: none;
 }
 
-.partnership-website:hover,
-.partnership-website:focus-visible {
-    background-color: #287cf5;
+.partnership-qr h2,
+.partnership-qr p {
+    margin: 0;
+}
+
+.partnership-qr h2 {
+    font-size: 18px;
+}
+
+.partnership-qr-code {
+    display: grid;
+    width: 184px;
+    height: 184px;
+    place-items: center;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.partnership-qr p {
+    color: var(--color-gray-200);
+    font-size: 14px;
 }
 
 .partnership-empty {

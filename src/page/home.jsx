@@ -1,7 +1,7 @@
 import './home.styles.css'
 import Switch from '../components/switch';
-import IntMap from '../components/map';
-import PhMap from '../components/phmap';
+import IntMap from '../components/world-map';
+import PhilippinesMap from '../components/philippines-map';
 import Filters from '../components/filters';
 import Cards from '../components/cards';
 import Building_icon from '../components/building-icon';
@@ -102,7 +102,7 @@ function Home(){
             </div>
                 {/* Map */}
             <div className='home-map-wrapper'>
-                {scope ? <IntMap/> : <PhMap/>}
+                {scope ? <IntMap/> : <PhilippinesMap/>}
             </div>
                 
             <div className="partners">
