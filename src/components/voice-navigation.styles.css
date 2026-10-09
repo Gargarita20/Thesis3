@@ -19,6 +19,28 @@
     line-height: 1.35;
 }
 
+.voice-navigation-talkback {
+    min-height: 40px;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 20px;
+    color: #fff;
+    background: #26354b;
+    font-family: var(--font-plus-jakarta-sans);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.voice-navigation-talkback.is-enabled {
+    border-color: #9bd4ad;
+    background: #24583b;
+}
+
+.voice-navigation-talkback:focus-visible {
+    outline: 3px solid #e6a844;
+    outline-offset: 3px;
+}
+
 .voice-navigation-button {
     display: grid;
     place-items: center;
