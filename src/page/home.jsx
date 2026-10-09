@@ -155,7 +155,9 @@ function Home(){
                     company={scope ? r.Industry : r.Partner_Industry} 
                     address={r.Address} 
                     industry={scope ? "International Partner" : r.Deptmt}
-                    link={r.Link}/>
+                    link={r.Link}
+                    record={r}
+                    international={scope}/>
                     )}
 
                     {/* <Cards company={"Company"} address={"Address"} industry={"Industry"} link={"Sample"} /> */}

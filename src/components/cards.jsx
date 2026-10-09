@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import './cards.styles.css'
 import QRCode from 'react-qr-code';
+import { Link } from 'react-router-dom';
 import mitsu from '../media/mitsubishi motors philippines.png';
 
 function LazyQRCode({ value }) {
@@ -42,7 +43,7 @@ function Cards(prop){
     const qr_link = "sample";
     
     return (
-        <div className="cards">
+        <Link className="cards" to="/partnership" state={{ record: prop.record, international: prop.international }} aria-label={`View partnership details for ${prop.company}`}>
             <div className="content">
                 <div className="image">
                     <img src={mitsu} alt="Sample" width={140} height={140}/>
@@ -59,7 +60,7 @@ function Cards(prop){
                     <LazyQRCode value={prop.link} />
                 </div>
             </div>
-        </div>
+        </Link>
 
     );
 }

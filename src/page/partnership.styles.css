@@ -1,0 +1,110 @@
+.partnership-page {
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 24px clamp(20px, 6vw, 88px) 64px;
+    color: var(--color-white);
+    background-color: var(--color-gray-100);
+}
+
+.partnership-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.partnership-back {
+    color: var(--color-white);
+    text-decoration: none;
+}
+
+.partnership-back:hover,
+.partnership-back:focus-visible {
+    color: #8db8ff;
+}
+
+.partnership-scope {
+    color: var(--color-gray-200);
+}
+
+.partnership-content {
+    width: min(100%, 760px);
+    margin: clamp(48px, 12vh, 112px) auto 0;
+}
+
+.partnership-eyebrow {
+    margin: 0 0 12px;
+    color: #8db8ff;
+    text-transform: uppercase;
+}
+
+.partnership-content h1 {
+    margin: 0;
+    overflow-wrap: anywhere;
+    font-size: clamp(32px, 6vw, 56px);
+}
+
+.partnership-intro {
+    margin: 12px 0 36px;
+    color: var(--color-gray-200);
+}
+
+.partnership-facts {
+    margin: 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.partnership-facts div {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.7fr) 1.3fr;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.partnership-facts dt {
+    color: var(--color-gray-200);
+}
+
+.partnership-facts dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.partnership-website {
+    display: inline-block;
+    margin-top: 28px;
+    padding: 12px 18px;
+    border-radius: 6px;
+    color: var(--color-white);
+    background-color: var(--color-accent);
+    text-decoration: none;
+}
+
+.partnership-website:hover,
+.partnership-website:focus-visible {
+    background-color: #287cf5;
+}
+
+.partnership-empty {
+    width: min(100%, 760px);
+    margin: 18vh auto 0;
+}
+
+.partnership-empty h1 {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 520px) {
+    .partnership-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .partnership-facts div {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+}

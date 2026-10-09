@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion"
 import Idle from "./page/idle"
 import Home from "./page/home"
+import Partnership from "./page/partnership"
 import VoiceNavigation from "./components/VoiceNavigation"
 
 const PageWrapper = ({ children }) => (
@@ -36,6 +37,14 @@ function MainContent() {
             element={
               <PageWrapper>
                 <Home />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/partnership"
+            element={
+              <PageWrapper>
+                <Partnership />
               </PageWrapper>
             }
           />
