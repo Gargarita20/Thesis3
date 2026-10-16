@@ -56,7 +56,7 @@ function Partnership() {
                     </div>
                     <div>
                         <dt>Partnership Information</dt>
-                        <dd>{record.Information || "Not provided"}</dd>
+                        <dd className='information'>{record.Information || "Not provided"}</dd>
                     </div>
                 </dl>
 

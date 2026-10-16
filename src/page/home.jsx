@@ -147,6 +147,8 @@ function Home(){
                         <Filters name="Drafting" checked={filter === "Drafting"} change={handleFilter}/>
                         <Filters name="Electrical" checked={filter === "Electrical"} change={handleFilter}/>
                         <Filters name="Electronics" checked={filter === "Electronics"} change={handleFilter}/>
+                        <Filters name="Food" value="Food Processing" checked={filter === "Food Processing"} change={handleFilter}/>
+                        <Filters name="Mechanical / Welding" checked={filter === "Mechanical / Welding"} change={handleFilter}/>
                     </div>
                 )}
 
@@ -156,6 +158,7 @@ function Home(){
                     address={r.Address} 
                     industry={scope ? "International Partner" : r.Deptmt}
                     link={r.Link}
+                    logoPath={r.LogoPath ? `http://localhost:${back_port}/partner-logos/${r.LogoPath.split('/').map(encodeURIComponent).join('/')}` : null}
                     record={r}
                     international={scope}/>
                     )}
