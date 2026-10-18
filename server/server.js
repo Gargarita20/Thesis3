@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
-const { randomUUID } = require("crypto");
+const { randomUUID, timingSafeEqual } = require("crypto");
 const { createServer } = require("http");
 const Database = require("better-sqlite3");
 const { Server } = require("socket.io");
@@ -28,6 +28,7 @@ const remoteSessions = new Map();
 app.use(cors({
     origin: corsOrigin,
 }));
+app.use(express.json({ limit: "100kb" }));
 app.use("/partner-logos", express.static(partnerLogoDirectory));
 
 function openDatabase() {
@@ -150,6 +151,102 @@ app.get('/api/records', (req, res) => {
 app.get("/api/intRecords", (req, res) => {
     res.json(readIntDatabase());
 })
+
+const adminSessionLifetime = 2 * 60 * 60 * 1000;
+const adminSessions = new Map();
+const adminTables = {
+    local: { table: "Local", fields: ["Partner_Industry", "Address", "Deptmt", "Link", "Information", "LogoPath"], order: "Partner_Industry" },
+    international: { table: "International", fields: ["Industry", "Address", "Link", "Information", "LogoPath"], order: "Industry" },
+};
+
+function passwordMatches(input) {
+    const expected = process.env.ADMIN_PASSWORD;
+    if (!expected) return false;
+    const a = Buffer.from(String(input ?? ""));
+    const b = Buffer.from(expected);
+    return a.length === b.length && timingSafeEqual(a, b);
+}
+
+function requireAdmin(req, res, next) {
+    const token = (req.get("authorization") || "").replace(/^Bearer /, "");
+    const session = adminSessions.get(token);
+    if (!session || session.expiresAt <= Date.now()) {
+        adminSessions.delete(token);
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+    next();
+}
+
+function pickFields(config, body) {
+    return Object.fromEntries(config.fields
+        .filter((field) => body && field in body)
+        .map((field) => [field, String(body[field] ?? "").slice(0, 5000)]));
+}
+
+app.post("/api/admin/login", (req, res) => {
+    if (!process.env.ADMIN_PASSWORD) return res.status(503).json({ error: "ADMIN_PASSWORD is not configured" });
+    if (!passwordMatches(req.body?.password)) return res.status(401).json({ error: "Invalid password" });
+    const token = randomUUID();
+    adminSessions.set(token, { expiresAt: Date.now() + adminSessionLifetime });
+    res.json({ token });
+});
+
+app.use("/api/admin/:kind", requireAdmin, (req, res, next) => {
+    const config = adminTables[req.params.kind];
+    if (!config) return res.status(404).json({ error: "Unknown table" });
+    req.adminConfig = config;
+    next();
+});
+
+app.get("/api/admin/:kind", (req, res) => {
+    const { table, fields, order } = req.adminConfig;
+    const db = openDatabase();
+    try {
+        res.json(db.prepare(`SELECT ID, ${fields.join(", ")} FROM ${table} ORDER BY ${order}`).all());
+    } finally {
+        db.close();
+    }
+});
+
+app.post("/api/admin/:kind", (req, res) => {
+    const { table } = req.adminConfig;
+    const values = pickFields(req.adminConfig, req.body);
+    const columns = Object.keys(values);
+    if (!columns.length) return res.status(400).json({ error: "No fields provided" });
+    const db = openDatabase();
+    try {
+        const info = db.prepare(`INSERT INTO ${table} (${columns.join(", ")}) VALUES (${columns.map(() => "?").join(", ")})`).run(...Object.values(values));
+        res.status(201).json({ ID: info.lastInsertRowid, ...values });
+    } finally {
+        db.close();
+    }
+});
+
+app.put("/api/admin/:kind/:id", (req, res) => {
+    const { table } = req.adminConfig;
+    const values = pickFields(req.adminConfig, req.body);
+    const columns = Object.keys(values);
+    if (!columns.length) return res.status(400).json({ error: "No fields provided" });
+    const db = openDatabase();
+    try {
+        const info = db.prepare(`UPDATE ${table} SET ${columns.map((c) => `${c} = ?`).join(", ")} WHERE ID = ?`).run(...Object.values(values), Number(req.params.id));
+        if (!info.changes) return res.status(404).json({ error: "Record not found" });
+        res.json({ ID: Number(req.params.id), ...values });
+    } finally {
+        db.close();
+    }
+});
+
+app.delete("/api/admin/:kind/:id", (req, res) => {
+    const db = openDatabase();
+    try {
+        const info = db.prepare(`DELETE FROM ${req.adminConfig.table} WHERE ID = ?`).run(Number(req.params.id));
+        if (!info.changes) return res.status(404).json({ error: "Record not found" });
+        res.status(204).end();
+    } finally {
+        db.close();
+    }
+});
 
 app.post("/api/remote-session", (req, res) => {
     const now = Date.now();

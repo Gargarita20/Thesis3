@@ -1,0 +1,72 @@
+.admin_page, .admin_login {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: sans-serif;
+  color: #111;
+}
+
+.admin_login {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 320px;
+  margin-top: 15vh;
+}
+
+.admin_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin_header button, .admin_form button, .admin_table button, .admin_login button {
+  margin-left: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.admin_search, .admin_login input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  margin: 12px 0;
+}
+
+.admin_form {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.admin_form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.admin_form input, .admin_form textarea {
+  padding: 6px;
+  font: inherit;
+}
+
+.admin_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin_table th, .admin_table td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.admin_message {
+  color: #b00020;
+}

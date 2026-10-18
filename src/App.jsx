@@ -6,6 +6,7 @@ import Idle from "./page/idle"
 import Home from "./page/home"
 import Partnership from "./page/partnership"
 import RemoteControl from "./page/remote-control"
+import Admin from "./page/admin"
 import VoiceNavigation from "./components/VoiceNavigation"
 import { API_URL, SOCKET_URL } from "./config"
 
@@ -30,7 +31,7 @@ function MainContent() {
   navigateRef.current = navigate;
 
   useEffect(() => {
-    if (currentPathRef.current.startsWith('/remote/')) return undefined;
+    if (currentPathRef.current.startsWith('/remote/') || currentPathRef.current === '/admin') return undefined;
 
     let cancelled = false;
     let socket;
@@ -86,6 +87,10 @@ function MainContent() {
           <Route
             path="/remote/:token"
             element={<PageWrapper><RemoteControl /></PageWrapper>}
+          />
+          <Route
+            path="/admin"
+            element={<PageWrapper><Admin /></PageWrapper>}
           />
           <Route
             path="/home"
