@@ -192,3 +192,70 @@ path, line, circle{
   	flex-shrink: 0;
 	transition: 300ms ease-in-out;	
 }
+
+.remotePanel {
+	position: absolute;
+	right: 24px;
+	bottom: 18px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 14px 10px 10px;
+	background: #102b31;
+	color: #fff;
+	border-radius: 6px;
+	box-shadow: 0 8px 22px rgba(15, 35, 40, 0.2);
+}
+
+.remoteQr {
+	width: 104px;
+	height: 104px;
+	display: grid;
+	place-items: center;
+	background: #fff;
+}
+
+.remoteQrLoading {
+	color: #102b31;
+	font-size: 1.4rem;
+}
+
+.remoteCopy {
+	display: grid;
+	gap: 5px;
+	font-family: var(--font-plus-jakarta-sans);
+	font-size: 0.78rem;
+	white-space: nowrap;
+}
+
+.remoteCopy strong {
+	font-size: 0.7rem;
+	letter-spacing: 0.08em;
+}
+
+@media (max-width: 700px) {
+	.remotePanel {
+		right: 12px;
+		bottom: 12px;
+		gap: 8px;
+		padding: 7px 9px 7px 7px;
+	}
+
+	.remoteQr {
+		width: 76px;
+		height: 76px;
+	}
+
+	.remoteQr svg {
+		width: 76px;
+		height: 76px;
+	}
+
+	.remoteCopy {
+		font-size: 0.68rem;
+	}
+
+	.remoteCopy strong {
+		font-size: 0.62rem;
+	}
+}

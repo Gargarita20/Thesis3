@@ -3,15 +3,30 @@ const app = express();
 const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
+const { randomUUID } = require("crypto");
+const { createServer } = require("http");
 const Database = require("better-sqlite3");
+const { Server } = require("socket.io");
 
-const port = 3000;
-const front_port = 5173;
-const databasePath = path.join(__dirname, "listcit-complete.db");
+const port = Number(process.env.PORT) || 3000;
+const remoteSessionLifetime = 15 * 60 * 1000;
+const databasePath = process.env.DATABASE_PATH || path.join(__dirname, "listcit-complete.db");
 const partnerLogoDirectory = path.resolve(__dirname, "../src/media/PARTNERS LOGO");
+const httpServer = createServer(app);
+const allowedOrigins = new Set([
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    ...(process.env.CORS_ORIGINS || "").split(",").map((origin) => origin.trim()).filter(Boolean),
+]);
+const corsOrigin = (origin, callback) => {
+    if (!origin || allowedOrigins.has(origin)) return callback(null, true);
+    return callback(new Error("Origin is not allowed by CORS"));
+};
+const io = new Server(httpServer, { cors: { origin: corsOrigin } });
+const remoteSessions = new Map();
 
 app.use(cors({
-    origin: [`http://localhost:${front_port}`, `http://127.0.0.1:${front_port}`]
+    origin: corsOrigin,
 }));
 app.use("/partner-logos", express.static(partnerLogoDirectory));
 
@@ -136,9 +151,61 @@ app.get("/api/intRecords", (req, res) => {
     res.json(readIntDatabase());
 })
 
+app.post("/api/remote-session", (req, res) => {
+    const now = Date.now();
+    for (const [token, session] of remoteSessions) {
+        if (session.expiresAt <= now) remoteSessions.delete(token);
+    }
+
+    const token = randomUUID();
+    remoteSessions.set(token, { expiresAt: now + remoteSessionLifetime });
+    res.json({ token });
+});
+
+const remoteCommands = new Set([
+    "home", "start", "back", "local", "international", "all",
+    "Automotive", "Computer", "Drafting", "Electrical", "Electronics",
+    "Food Processing", "Mechanical / Welding", "scroll-up", "scroll-down",
+]);
+
+io.on("connection", (socket) => {
+    socket.on("remote:kiosk", (token) => {
+        const session = remoteSessions.get(token);
+        if (!session || session.expiresAt <= Date.now()) return;
+
+        socket.data.remoteToken = token;
+        socket.data.remoteRole = "kiosk";
+        socket.join(`remote:${token}`);
+    });
+
+    socket.on("remote:join", (token) => {
+        const session = remoteSessions.get(token);
+        if (!session || session.expiresAt <= Date.now()) {
+            socket.emit("remote:expired");
+            return;
+        }
+
+        socket.data.remoteToken = token;
+        socket.data.remoteRole = "controller";
+        socket.join(`remote:${token}`);
+        socket.emit("remote:joined");
+    });
+
+    socket.on("remote:command", (command) => {
+        if (socket.data.remoteRole !== "controller" || !remoteCommands.has(command)) return;
+        const session = remoteSessions.get(socket.data.remoteToken);
+        if (!session || session.expiresAt <= Date.now()) {
+            socket.emit("remote:expired");
+            return;
+        }
+
+        socket.to(`remote:${socket.data.remoteToken}`).emit("remote:command", command);
+    });
+});
+
 
 ensureLogoPaths();
 
-app.listen(port, () => {
+httpServer.listen(port, "0.0.0.0", () => {
     console.log("Server running on port", port);
 });

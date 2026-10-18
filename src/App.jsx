@@ -1,9 +1,13 @@
-import { Routes, Route, useLocation } from "react-router-dom"
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
+import { io } from "socket.io-client"
 import Idle from "./page/idle"
 import Home from "./page/home"
 import Partnership from "./page/partnership"
+import RemoteControl from "./page/remote-control"
 import VoiceNavigation from "./components/VoiceNavigation"
+import { API_URL, SOCKET_URL } from "./config"
 
 const PageWrapper = ({ children }) => (
   <motion.div
@@ -18,19 +22,70 @@ const PageWrapper = ({ children }) => (
 
 function MainContent() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [remoteUrl, setRemoteUrl] = useState('');
+  const currentPathRef = useRef(location.pathname);
+  const navigateRef = useRef(navigate);
+  currentPathRef.current = location.pathname;
+  navigateRef.current = navigate;
+
+  useEffect(() => {
+    if (currentPathRef.current.startsWith('/remote/')) return undefined;
+
+    let cancelled = false;
+    let socket;
+    fetch(`${API_URL}/api/remote-session`, { method: 'POST' })
+      .then((response) => {
+        if (!response.ok) throw new Error('Could not create a remote session');
+        return response.json();
+      })
+      .then(({ token }) => {
+        if (cancelled) return;
+        setRemoteUrl(`${window.location.origin}/remote/${token}`);
+        socket = io(SOCKET_URL);
+        socket.on('connect', () => socket.emit('remote:kiosk', token));
+        socket.on('remote:command', (command) => {
+          if (command === 'home' || command === 'start') navigateRef.current('/home');
+          else if (command === 'back') {
+            navigateRef.current(currentPathRef.current === '/partnership' ? '/home' : '/');
+          } else if (command === 'local' || command === 'international') {
+            window.dispatchEvent(new CustomEvent('voice-scope', { detail: command === 'international' }));
+          } else if (command === 'all') {
+            window.dispatchEvent(new CustomEvent('voice-filter', { detail: 'All' }));
+          } else if (command === 'scroll-up' || command === 'scroll-down') {
+            const cards = document.querySelector('.cards_wrapper');
+            cards?.scrollBy({
+              top: (command === 'scroll-down' ? 1 : -1) * (cards.clientHeight * 0.8),
+              behavior: 'smooth',
+            });
+          } else {
+            window.dispatchEvent(new CustomEvent('voice-filter', { detail: command }));
+          }
+        });
+      })
+      .catch((error) => console.error('Remote control unavailable:', error));
+
+    return () => {
+      cancelled = true;
+      socket?.disconnect();
+    };
+  }, []);
 
   return (
     <>
       <AnimatePresence mode="wait">
-        {/* Pass location and location.pathname as the key */}
         <Routes location={location} key={location.pathname}>
           <Route
             path="/"
             element={
               <PageWrapper>
-                <Idle />
+                <Idle remoteUrl={remoteUrl} />
               </PageWrapper>
             }
+          />
+          <Route
+            path="/remote/:token"
+            element={<PageWrapper><RemoteControl /></PageWrapper>}
           />
           <Route
             path="/home"
@@ -50,18 +105,14 @@ function MainContent() {
           />
         </Routes>
       </AnimatePresence>
+      {!location.pathname.startsWith('/remote/')}
+      {/* {!location.pathname.startsWith('/remote/') && <VoiceNavigation />} */}
     </>
   );
 }
 
-
 function App() {
-  return <>
-    <MainContent />
-    <VoiceNavigation />
-  </>
+  return <MainContent />
 }
-
-
 
 export default App

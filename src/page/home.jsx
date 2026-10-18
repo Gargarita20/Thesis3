@@ -8,6 +8,7 @@ import Building_icon from '../components/building-icon';
 import Location_icon from '../components/location-icon';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { API_URL } from '../config';
 
 function detectIdle(){
     const navigate = useNavigate();
@@ -60,7 +61,6 @@ function Home(){
         };
     }, []);
     
-    const back_port = 3000;
     const [records, getRecords] = useState([]);
 
     const filteredRecords = scope || filter === "All"
@@ -70,7 +70,7 @@ function Home(){
     useEffect(() => {
         const controller = new AbortController();
 
-        fetch(`http://localhost:${back_port}${scope ? "/api/intRecords" : "/api/records"}`, { signal: controller.signal })
+        fetch(`${API_URL}${scope ? "/api/intRecords" : "/api/records"}`, { signal: controller.signal })
         .then(res => res.json())
         .then(data => getRecords(data))
         .catch(error => {
@@ -158,7 +158,7 @@ function Home(){
                     address={r.Address} 
                     industry={scope ? "International Partner" : r.Deptmt}
                     link={r.Link}
-                    logoPath={r.LogoPath ? `http://localhost:${back_port}/partner-logos/${r.LogoPath.split('/').map(encodeURIComponent).join('/')}` : null}
+                    logoPath={r.LogoPath ? `${API_URL}/partner-logos/${r.LogoPath.split('/').map(encodeURIComponent).join('/')}` : null}
                     record={r}
                     international={scope}/>
                     )}

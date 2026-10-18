@@ -2,8 +2,9 @@ import styles from './idle.styles.module.css'
 import cit from '../media/CIT.png'
 import { Link } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
+import QRCode from 'react-qr-code'
 
-function Idle() {
+function Idle({ remoteUrl }) {
   const svgRef = useRef(null)
   const [activeRegion, setActiveRegion] = useState(null)
 
@@ -180,6 +181,17 @@ function Idle() {
                     <img className={styles.cit1Icon} alt="" src={cit}/>
                 </Link>
                 <div className={styles.footerButtonText}>Let’s start!</div>
+              <aside className={styles.remotePanel} aria-label="Phone remote connection">
+                <div className={styles.remoteQr}>
+                  {remoteUrl
+                    ? <QRCode value={remoteUrl} size={104} />
+                    : <span className={styles.remoteQrLoading}>...</span>}
+                </div>
+                <div className={styles.remoteCopy}>
+                  <strong>PHONE REMOTE</strong>
+                  <span>{remoteUrl ? 'Scan to connect' : 'Connecting...'}</span>
+                </div>
+              </aside>
             </div>
       			
     		</div>

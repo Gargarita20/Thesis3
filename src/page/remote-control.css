@@ -1,0 +1,147 @@
+.phone-remote {
+    --remote-ink: #18353a;
+    --remote-muted: #5f7373;
+    --remote-accent: #187a68;
+    --remote-rule: #d9e2dc;
+    min-height: 100vh;
+    padding: 28px 20px 36px;
+    background: #f1f4ef;
+    color: var(--remote-ink);
+    font-family: var(--font-plus-jakarta-sans), sans-serif;
+}
+
+.phone-remote-header,
+.remote-section {
+    width: min(100%, 520px);
+    margin: 0 auto;
+}
+
+.phone-remote-header {
+    padding: 10px 0 24px;
+}
+
+.phone-remote-kicker {
+    margin: 0 0 8px;
+    color: var(--remote-accent);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.phone-remote-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    line-height: 1.15;
+}
+
+.phone-remote-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 13px 0 0;
+    color: var(--remote-muted);
+    font-size: 0.84rem;
+    line-height: 1.4;
+}
+
+.phone-remote-status span {
+    flex: 0 0 9px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #bd7b39;
+}
+
+.phone-remote-status.is-connected span {
+    background: var(--remote-accent);
+}
+
+.remote-section {
+    padding: 18px 0;
+    border-top: 1px solid var(--remote-rule);
+}
+
+.remote-section h2 {
+    margin: 0 0 12px;
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.remote-navigation-controls,
+.remote-scope-controls,
+.remote-filter-controls,
+.remote-scroll-controls {
+    display: grid;
+    gap: 9px;
+}
+
+.remote-navigation-controls {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.remote-scope-controls,
+.remote-scroll-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.remote-filter-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.phone-remote button {
+    min-height: 48px;
+    padding: 11px 12px;
+    border: 1px solid #c6d4cd;
+    border-radius: 5px;
+    background: #fff;
+    color: var(--remote-ink);
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    touch-action: manipulation;
+}
+
+.phone-remote button:active:not(:disabled) {
+    background: #deeee7;
+}
+
+.phone-remote button:disabled {
+    opacity: 0.48;
+}
+
+.remote-navigation-controls button:nth-child(2),
+.remote-scope-controls button:first-child {
+    border-color: var(--remote-accent);
+    background: var(--remote-accent);
+    color: #fff;
+}
+
+.remote-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.remote-section-heading h2 {
+    margin-bottom: 12px;
+}
+
+.phone-remote .remote-all-button {
+    min-height: 36px;
+    margin: -6px 0 6px;
+    padding: 7px 15px;
+}
+
+@media (max-width: 360px) {
+    .phone-remote {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .remote-navigation-controls {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
