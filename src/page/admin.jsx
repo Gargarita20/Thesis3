@@ -89,7 +89,7 @@ function Admin() {
     return (
       <form className="admin_login" onSubmit={login}>
         <h1>Admin Login</h1>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" autoFocus />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"  required autoFocus />
         <button type="submit">Log in</button>
         {message && <p className="admin_message">{message}</p>}
       </form>

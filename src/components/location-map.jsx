@@ -63,6 +63,7 @@ function LocationMap({ address }) {
                 map.setView([place.lat, place.lon], place.exact ? 19 : 11);
                 L.marker([place.lat, place.lon], { icon }).addTo(map).bindPopup(address).openPopup();
                 setStatus('ready');
+                map.setZoom(19);
             })
             .catch((error) => {
                 if (error.name !== 'AbortError') setStatus('error');

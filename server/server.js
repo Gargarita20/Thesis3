@@ -148,8 +148,8 @@ const adminTables = {
 
 function passwordMatches(input) {
     const expected = process.env.ADMIN_PASSWORD;
-    if (!expected) return false;
-    const a = Buffer.from(String(input ?? ""));
+    if (!expected || typeof input !== "string" || input.length === 0) return false;
+    const a = Buffer.from(input);
     const b = Buffer.from(expected);
     return a.length === b.length && timingSafeEqual(a, b);
 }
