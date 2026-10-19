@@ -126,7 +126,7 @@ p{
 		transform: scale(1);
 	}
 	50%{
-		transform: scale(1.02);
+		transform: scale(1.03);
 	}
 	100%{
 		transform: scale(1);
@@ -147,13 +147,12 @@ path, line, circle{
   	flex-shrink: 0;
 
 	position: absolute;
-	/* top: -130px; */
 	top: clamp(-130px, -130px ,-150px);
 
 	transition: 300ms cubic-bezier(0.77, 0, 0.175, 1);
 	cursor: pointer;
+	animation: 2s breathe infinite ease-in-out;
 
-	/* border: 2px solid red; */
 }
 
 .cit1Icon:hover{
@@ -182,9 +181,7 @@ path, line, circle{
   	font-family: var(--font-plus-jakarta-sans);
 	
 	position: relative;
-	/* flex-shrink: 0; */
-	/* flex-grow: 1;  */
-	/* border: 2px solid green; */
+
 }
 .footerButtonText {
   	text-transform: uppercase;
@@ -199,7 +196,7 @@ path, line, circle{
 	bottom: 18px;
 	display: flex;
 	align-items: center;
-	gap: 12px;
+	gap: 16px;
 	padding: 10px 14px 10px 10px;
 	background: #102b31;
 	color: #fff;
@@ -208,8 +205,8 @@ path, line, circle{
 }
 
 .remoteQr {
-	width: 104px;
-	height: 104px;
+	width: 134px;
+	height: 134px;
 	display: grid;
 	place-items: center;
 	background: #fff;
@@ -226,6 +223,9 @@ path, line, circle{
 	font-family: var(--font-plus-jakarta-sans);
 	font-size: 0.78rem;
 	white-space: nowrap;
+	span{
+		font-size: 1.3rem;
+	}
 }
 
 .remoteCopy strong {

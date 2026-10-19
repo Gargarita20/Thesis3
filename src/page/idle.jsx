@@ -184,12 +184,12 @@ function Idle({ remoteUrl }) {
               <aside className={styles.remotePanel} aria-label="Phone remote connection">
                 <div className={styles.remoteQr}>
                   {remoteUrl
-                    ? <QRCode value={remoteUrl} size={104} />
+                    ? <QRCode value={remoteUrl} size={124} />
                     : <span className={styles.remoteQrLoading}>...</span>}
                 </div>
                 <div className={styles.remoteCopy}>
                   <strong>PHONE REMOTE</strong>
-                  <span>{remoteUrl ? 'Scan to connect' : 'Connecting...'}</span>
+                  <span>{remoteUrl ? 'Scan to start' : 'Connecting...'}</span>
                 </div>
               </aside>
             </div>
