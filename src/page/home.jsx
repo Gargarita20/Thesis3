@@ -12,7 +12,7 @@ import { useIdleTimer } from 'react-idle-timer';
 import { motion } from 'framer-motion';
 import { API_URL } from '../config';
 
-const IDLE_TIMEOUT = 10000;
+const IDLE_TIMEOUT = 30000;
 const IDLE_WARNING = 3000;
 
 // Survives Home unmounting so returning from a partnership keeps the scope and filter.

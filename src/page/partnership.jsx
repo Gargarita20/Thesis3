@@ -1,7 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import QRCode from 'react-qr-code';
-import PhilippinesMap from '../components/philippines-map';
-import InternationalMap from '../components/world-map';
+import LocationMap from '../components/location-map';
 import './partnership.styles.css';
 
 function Partnership() {
@@ -37,9 +36,7 @@ function Partnership() {
                 <p className="partnership-intro">Partnership information</p>
 
                 <h2 className="partnership-map-heading">Map location</h2>
-                {international
-                    ? <InternationalMap address={record.Address} detail />
-                    : <PhilippinesMap address={record.Address} detail />}
+                <LocationMap address={record.Address} />
 
                 <dl className="partnership-facts">
                     <div>
