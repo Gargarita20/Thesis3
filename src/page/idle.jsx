@@ -7,6 +7,13 @@ import QRCode from 'react-qr-code'
 function Idle({ remoteUrl }) {
   const svgRef = useRef(null)
   const [activeRegion, setActiveRegion] = useState(null)
+  const [remoteConnected, setRemoteConnected] = useState(Boolean(window.remoteConnected))
+
+  useEffect(() => {
+    const handleStatus = (event) => setRemoteConnected(event.detail)
+    window.addEventListener('remote-status', handleStatus)
+    return () => window.removeEventListener('remote-status', handleStatus)
+  }, [])
 
   useEffect(() => {
     const svg = svgRef.current
@@ -180,7 +187,7 @@ function Idle({ remoteUrl }) {
                 <Link to="/home" style={{display: 'contents'}}>
                     <img className={styles.cit1Icon} alt="" src={cit}/>
                 </Link>
-                <div className={styles.footerButtonText}>Let’s start!</div>
+                <div className={styles.footerButtonText}>Let's start!</div>
               <aside className={styles.remotePanel} aria-label="Phone remote connection">
                 <div className={styles.remoteQr}>
                   {remoteUrl
@@ -189,7 +196,7 @@ function Idle({ remoteUrl }) {
                 </div>
                 <div className={styles.remoteCopy}>
                   <strong>PHONE REMOTE</strong>
-                  <span>{remoteUrl ? 'Scan to start' : 'Connecting...'}</span>
+                  <span>{!remoteUrl ? 'Connecting...' : remoteConnected ? 'Remote connected' : 'Scan to start'}</span>
                 </div>
               </aside>
             </div>

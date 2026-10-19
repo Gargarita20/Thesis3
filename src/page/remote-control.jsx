@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
-import { SOCKET_URL, API_URL } from '../config';
+import { SOCKET_URL } from '../config';
 import './remote-control.css';
 
 const departments = [
-    ['Automotive', 'Automotive'],
-    ['Computer', 'Computer'],
-    ['Drafting', 'Drafting'],
-    ['Electrical', 'Electrical'],
-    ['Electronics', 'Electronics'],
-    ['Food Processing', 'Food Processing'],
-    ['Mechanical / Welding', 'Mechanical / Welding'],
+    'Automotive',
+    'Computer',
+    'Drafting',
+    'Electrical',
+    'Electronics',
+    'Food Processing',
+    'Mechanical / Welding',
 ];
 
 function RemoteControl() {
@@ -20,34 +20,11 @@ function RemoteControl() {
     const [connected, setConnected] = useState(false);
     const socketRef = useRef(null);
     const [international, setInternational] = useState(false);
-    const [partners, setPartners] = useState([]);
     const [filter, setFilter] = useState('All');
     const [query, setQuery] = useState('');
-    const [selected, setSelected] = useState('');
     const [expiresAt, setExpiresAt] = useState(null);
     const [now, setNow] = useState(Date.now());
-
-    useEffect(() => {
-        const controller = new AbortController();
-        fetch(`${API_URL}${international ? '/api/intRecords' : '/api/records'}`, { signal: controller.signal })
-            .then((response) => response.json())
-            .then((records) => setPartners(records.map((record) => ({
-                name: international ? record.Industry : record.Partner_Industry,
-                department: String(record.Deptmt ?? '').trim(),
-            })).filter((partner) => partner.name)))
-            .catch(() => {});
-        setSelected('');
-        return () => controller.abort();
-    }, [international]);
-
-    const search = query.trim().toLowerCase();
-    const matchedPartners = partners
-        .filter((partner) => international || filter === 'All' || partner.department.toLowerCase() === filter.toLowerCase())
-        .filter((partner) => partner.name.toLowerCase().includes(search));
-    const matches = [...new Set(matchedPartners.map((partner) => partner.name))].map((name) => ({
-        name,
-        departments: [...new Set(matchedPartners.filter((partner) => partner.name === name && partner.department).map((partner) => partner.department))],
-    }));
+    const [confirmExit, setConfirmExit] = useState(false);
 
     useEffect(() => {
         const connection = io(SOCKET_URL);
@@ -64,13 +41,22 @@ function RemoteControl() {
             setStatus('Another phone is already controlling this kiosk.');
         });
         connection.on('remote:expired', () => {
+            setConfirmExit(false);
             setExpiresAt(null);
             setConnected(false);
             setStatus('This QR code has expired. Scan the code on the kiosk again.');
         });
+        connection.on('remote:confirm-exit', () => setConfirmExit(true));
+        connection.on('remote:ended', () => {
+            setExpiresAt(null);
+            setConnected(false);
+            setConfirmExit(false);
+            setStatus('Session ended. Scan the new QR code on the kiosk to reconnect.');
+            connection.disconnect();
+        });
         connection.on('disconnect', () => {
             setConnected(false);
-            setStatus('Connection lost. Reconnecting...');
+            setStatus('Connection lost.');
         });
         connection.on('connect_error', () => {
             setConnected(false);
@@ -107,99 +93,95 @@ function RemoteControl() {
         send(isInternational ? 'international' : 'local');
     };
 
-    const changeFilter = (command) => {
-        setFilter(command);
-        setSelected('');
-        send(command);
+    const changeFilter = (value) => {
+        setFilter(value);
+        send(value === 'All' ? 'all' : value);
+    };
+
+    const endSession = () => {
+        socketRef.current?.emit('remote:exit');
+    };
+
+    const changeQuery = (value) => {
+        setQuery(value);
+        if (connected) socketRef.current?.emit('remote:search', value);
     };
 
     return (
         <main className="phone-remote">
-            <header className="phone-remote-header">
-                <p className="phone-remote-kicker">CIT Partnerships</p>
-                <h1>System Remote</h1>
+            <div className="remote-body">
                 <p className={`phone-remote-status${connected ? ' is-connected' : ''}`} role="status">
                     <span aria-hidden="true" />
                     {status}
                 </p>
-            </header>
 
-            {expiringSoon && (
-                <div className="remote-expiry-warning" role="alert">
-                    Session expires in {Math.floor(secondsLeft / 60)}:{String(secondsLeft % 60).padStart(2, '0')}. Scan the kiosk QR code again to continue.
-                </div>
-            )}
+                {expiringSoon && (
+                    <div className="remote-expiry-warning" role="alert">
+                        Session expires in {Math.floor(secondsLeft / 60)}:{String(secondsLeft % 60).padStart(2, '0')}. Scan the kiosk QR code again to continue.
+                    </div>
+                )}
 
-            <section className="remote-section" aria-labelledby="navigation-title">
-                <h2 id="navigation-title">Navigate</h2>
-                <div className="remote-navigation-controls">
-                    <button type="button" onClick={() => send('back')} disabled={!connected}>Back</button>
-                    <button type="button" onClick={() => send('home')} disabled={!connected}>Partners</button>
-                    <button type="button" onClick={() => send('start')} disabled={!connected}>Start</button>
-                </div>
-            </section>
-
-            
-
-            <section className="remote-section" aria-labelledby="scope-title">
-                <h2 id="scope-title">Partner scope</h2>
-                <div className="remote-scope-controls">
-                    <button type="button" onClick={() => changeScope(false)} disabled={!connected}>Local</button>
-                    <button type="button" onClick={() => changeScope(true)} disabled={!connected}>International</button>
-                </div>
-            </section>
-
-            <section className="remote-section" aria-labelledby="filter-title">
-                <div className="remote-section-heading">
-                    <h2 id="filter-title">Filter partners</h2>
-                    <button className="remote-all-button" type="button" onClick={() => changeFilter('All')} disabled={!connected}>All</button>
-                </div>
-                <div className="remote-filter-controls">
-                    {departments.map(([label, command]) => (
-                        <button key={command} type="button" onClick={() => changeFilter(command)} disabled={!connected}>
-                            {label}
-                        </button>
-                    ))}
-                </div>
-            </section>
-
-            <section className="remote-section" aria-labelledby="search-title">
-                <h2 id="search-title">Search partner</h2>
                 <input
                     className="remote-search"
                     type="search"
                     value={query}
-                    onChange={(event) => { setQuery(event.target.value); setSelected(''); }}
-                    placeholder="Type a partner name"
+                    onChange={(event) => changeQuery(event.target.value)}
+                    placeholder="Search partner"
+                    aria-label="Search partner"
+                    disabled={!connected}
                 />
-                <p className="remote-results-label">{matches.length} partner{matches.length === 1 ? '' : 's'} ({international ? 'International' : 'Local'}{!international && filter !== 'All' ? `, ${filter}` : ''})</p>
-                <ul className="remote-results" key={`${international}-${filter}`}>
-                    {matches.map(({ name, departments: partnerDepartments }) => (
-                        <li key={name}>
-                            <button type="button" className={name === selected ? 'is-selected' : ''} onClick={() => setSelected(name)}>
-                                <span className="remote-result-name">{name}</span>
-                                {partnerDepartments.length > 0 && <span className="remote-result-department">{partnerDepartments.join(', ')}</span>}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-                <button
-                    type="button"
-                    className="remote-open-button"
-                    disabled={!connected || !selected}
-                    onClick={() => socketRef.current?.emit('remote:open', { international, name: selected })}
-                >
-                    Open selected partner
-                </button>
-            </section>
 
-            <section className="remote-section remote-scroll-section" aria-labelledby="scroll-title">
-                <h2 id="scroll-title">Browse results</h2>
-                <div className="remote-scroll-controls">
-                    <button type="button" onClick={() => send('scroll-up')} disabled={!connected}>Scroll up</button>
-                    <button type="button" onClick={() => send('scroll-down')} disabled={!connected}>Scroll down</button>
+                <div className="remote-scope-buttons">
+                    <button type="button" className={!international ? 'is-active' : ''} onClick={() => changeScope(false)} disabled={!connected}>Local</button>
+                    <button type="button" className={international ? 'is-active' : ''} onClick={() => changeScope(true)} disabled={!connected}>International</button>
                 </div>
-            </section>
+
+                                {!international && (
+                    <select
+                        className="remote-filter"
+                        value={filter}
+                        onChange={(event) => changeFilter(event.target.value)}
+                        disabled={!connected}
+                        aria-label="Filter partners by department"
+                    >
+                        <option value="All">All departments</option>
+                        {departments.map((name) => <option key={name} value={name}>{name}</option>)}
+                    </select>
+                )}
+
+                <div className="remote-dpad" role="group" aria-label="Directional pad">
+                    <button type="button" className="dpad-up" aria-label="Up" onClick={() => send('up')} disabled={!connected}>Up</button>
+                    <button type="button" className="dpad-left" aria-label="Left" onClick={() => send('left')} disabled={!connected}>Left</button>
+                    <button type="button" className="dpad-ok" aria-label="Select" onClick={() => send('select')} disabled={!connected}>OK</button>
+                    <button type="button" className="dpad-right" aria-label="Right" onClick={() => send('right')} disabled={!connected}>Right</button>
+                    <button type="button" className="dpad-down" aria-label="Down" onClick={() => send('down')} disabled={!connected}>Down</button>
+                </div>
+
+                <div className="remote-round-buttons">
+                    <div>
+                        <button type="button" aria-label="Back" onClick={() => send('back')} disabled={!connected}>Back</button>
+                        {/* <span>Back</span> */}
+                    </div>
+                    
+                    <div>
+                        <button type="button" aria-label="Start" onClick={() => send('start')} disabled={!connected}>Start</button>
+                        {/* <span>Start</span> */}
+                    </div>
+                </div>
+            </div>
+
+            {confirmExit && (
+                <div className="remote-confirm" role="alertdialog" aria-labelledby="remote-confirm-title">
+                    <div className="remote-confirm-box">
+                        <h2 id="remote-confirm-title">Leave the directory?</h2>
+                        <p>This returns the kiosk to the start screen and disconnects this remote.</p>
+                        <div className="remote-confirm-actions">
+                            <button type="button" onClick={() => setConfirmExit(false)}>No</button>
+                            <button type="button" className="is-primary" onClick={endSession}>Yes</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </main>
     );
 }

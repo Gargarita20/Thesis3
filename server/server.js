@@ -247,7 +247,7 @@ app.post("/api/remote-session", (req, res) => {
 });
 
 const remoteCommands = new Set([
-    "home", "start", "back", "local", "international", "all",
+    "home", "start", "back", "up", "down", "left", "right", "select", "local", "international", "all",
     "Automotive", "Computer", "Drafting", "Electrical", "Electronics",
     "Food Processing", "Mechanical / Welding", "scroll-up", "scroll-down",
 ]);
@@ -305,6 +305,32 @@ io.on("connection", (socket) => {
         }
 
         socket.to(`remote:${socket.data.remoteToken}`).emit("remote:command", command);
+    });
+
+    socket.on("remote:confirm-exit", () => {
+        if (socket.data.remoteRole !== "kiosk") return;
+        socket.to(`remote:${socket.data.remoteToken}`).emit("remote:confirm-exit");
+    });
+
+    socket.on("remote:exit", () => {
+        if (socket.data.remoteRole !== "controller") return;
+        const token = socket.data.remoteToken;
+        socket.to(`remote:${token}`).emit("remote:command", "exit");
+        socket.emit("remote:ended");
+        remoteSessions.delete(token);
+        socket.leave(`remote:${token}`);
+        socket.data.remoteRole = null;
+    });
+
+    socket.on("remote:search", (text) => {
+        if (socket.data.remoteRole !== "controller" || typeof text !== "string") return;
+        const session = remoteSessions.get(socket.data.remoteToken);
+        if (!session || session.expiresAt <= Date.now()) {
+            socket.emit("remote:expired");
+            return;
+        }
+
+        socket.to(`remote:${socket.data.remoteToken}`).emit("remote:search", text.slice(0, 200));
     });
 
     socket.on("remote:open", (payload) => {

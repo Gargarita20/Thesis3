@@ -25,6 +25,7 @@ function MainContent() {
   const location = useLocation();
   const navigate = useNavigate();
   const [remoteUrl, setRemoteUrl] = useState('');
+  const [sessionKey, setSessionKey] = useState(0);
   const currentPathRef = useRef(location.pathname);
   const navigateRef = useRef(navigate);
   currentPathRef.current = location.pathname;
@@ -35,6 +36,9 @@ function MainContent() {
 
     let cancelled = false;
     let socket;
+    setRemoteUrl('');
+    window.remoteConnected = false;
+    window.dispatchEvent(new CustomEvent('remote-status', { detail: false }));
     fetch(`${API_URL}/api/remote-session`, { method: 'POST' })
       .then((response) => {
         if (!response.ok) throw new Error('Could not create a remote session');
@@ -58,10 +62,21 @@ function MainContent() {
             })
             .catch((error) => console.error('Could not open partner:', error));
         });
+        socket.on('remote:search', (text) => {
+          window.dispatchEvent(new CustomEvent('remote-search', { detail: text }));
+        });
         socket.on('remote:command', (command) => {
-          if (command === 'home' || command === 'start') navigateRef.current('/home');
+          if (['up', 'down', 'left', 'right', 'select'].includes(command)) {
+            window.dispatchEvent(new CustomEvent('remote-nav', { detail: command }));
+            return;
+          }
+          if (command === 'exit') {
+            navigateRef.current('/');
+            setSessionKey((key) => key + 1);
+          } else if (command === 'home' || command === 'start') navigateRef.current('/home');
           else if (command === 'back') {
-            navigateRef.current(currentPathRef.current === '/partnership' ? '/home' : '/');
+            if (currentPathRef.current === '/partnership') navigateRef.current('/home');
+            else if (currentPathRef.current === '/home') socket.emit('remote:confirm-exit');
           } else if (command === 'local' || command === 'international') {
             window.dispatchEvent(new CustomEvent('voice-scope', { detail: command === 'international' }));
           } else if (command === 'all') {
@@ -83,7 +98,7 @@ function MainContent() {
       cancelled = true;
       socket?.disconnect();
     };
-  }, []);
+  }, [sessionKey]);
 
   return (
     <>
