@@ -131,6 +131,19 @@ function readIntDatabase() {
 
 
 
+app.get('/', (req, res) => {
+    res.send("Server Backend Testing");
+})
+
+app.get('/api/sample', (req, res) => {
+    res.json([
+    {id: 1, company: "MINISO", country: "Germany", department: "Food"},
+    {id: 2, company: "EEHHY Comp", country: "South Korea", department: "Mech"},
+    {id: 3, company: "JEEZ LUIZ", country: "Hapon", department: "Elec"},
+    {id: 4, company: "PEPA MILA PIZZA", country: "Italy", department: "Electronics"},
+    ])
+})
+
 app.get('/api/records', (req, res) => {
     res.json(readDatabase());
 })
@@ -284,20 +297,6 @@ io.on("connection", (socket) => {
         }
 
         socket.to(`remote:${socket.data.remoteToken}`).emit("remote:command", command);
-    });
-
-    socket.on("remote:open", (payload) => {
-        if (socket.data.remoteRole !== "controller" || typeof payload?.name !== "string") return;
-        const session = remoteSessions.get(socket.data.remoteToken);
-        if (!session || session.expiresAt <= Date.now()) {
-            socket.emit("remote:expired");
-            return;
-        }
-
-        socket.to(`remote:${socket.data.remoteToken}`).emit("remote:open", {
-            international: Boolean(payload.international),
-            name: payload.name.slice(0, 500),
-        });
     });
 });
 
