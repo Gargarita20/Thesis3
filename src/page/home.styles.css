@@ -178,3 +178,17 @@
     width: max-content;
     height: auto;
 }
+
+.idle-notice {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1000;
+    max-width: 280px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    background: rgba(24, 53, 58, 0.92);
+    color: #fff;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}

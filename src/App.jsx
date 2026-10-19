@@ -45,6 +45,15 @@ function MainContent() {
         setRemoteUrl(`${window.location.origin}/remote/${token}`);
         socket = io(SOCKET_URL);
         socket.on('connect', () => socket.emit('remote:kiosk', token));
+        socket.on('remote:open', ({ international, name }) => {
+          fetch(`${API_URL}${international ? '/api/intRecords' : '/api/records'}`)
+            .then((response) => response.json())
+            .then((records) => {
+              const record = records.find((item) => (international ? item.Industry : item.Partner_Industry) === name);
+              if (record) navigateRef.current('/partnership', { state: { record, international } });
+            })
+            .catch((error) => console.error('Could not open partner:', error));
+        });
         socket.on('remote:command', (command) => {
           if (command === 'home' || command === 'start') navigateRef.current('/home');
           else if (command === 'back') {
