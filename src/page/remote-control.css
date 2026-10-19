@@ -59,6 +59,11 @@
 .remote-section {
     padding: 18px 0;
     border-top: 1px solid var(--remote-rule);
+    p{
+        text-align: center;
+        color: rgb(20, 19, 19);
+        text-transform: uppercase;
+    }
 }
 
 .remote-section h2 {
@@ -103,6 +108,31 @@
     touch-action: manipulation;
 }
 
+.phone-remote button {
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.remote-results {
+    animation: remote-fade-in 0.25s ease;
+}
+
+@keyframes remote-fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+}
+
+.remote-expiry-warning {
+    margin: 14px 0 0;
+    padding: 11px 13px;
+    border: 1px solid #e0b36f;
+    border-radius: 5px;
+    background: #fff4e0;
+    color: #7a4a10;
+    font-size: 0.84rem;
+    line-height: 1.4;
+    animation: remote-fade-in 0.25s ease;
+}
+
 .phone-remote button:active:not(:disabled) {
     background: #deeee7;
 }
@@ -144,4 +174,60 @@
     .remote-navigation-controls {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+}
+.phone-remote .remote-search {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding: 12px;
+    border: 1px solid #c6d4cd;
+    border-radius: 5px;
+    font: inherit;
+}
+
+.remote-results {
+    margin: 8px 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.remote-results button {
+    width: 100%;
+    text-align: left;
+}
+
+.phone-remote .remote-results button.is-selected,
+.phone-remote .remote-open-button {
+    border-color: var(--remote-accent);
+    background: var(--remote-accent);
+    color: #fff;
+}
+
+.phone-remote .remote-open-button {
+    width: 100%;
+}
+
+.phone-remote .remote-results button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.remote-result-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.remote-result-department {
+    flex-shrink: 0;
+    max-width: 40%;
+    text-align: right;
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.75;
 }

@@ -7,28 +7,51 @@ import Cards from '../components/cards';
 import Building_icon from '../components/building-icon';
 import Location_icon from '../components/location-icon';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useIdleTimer } from 'react-idle-timer';
 import { motion } from 'framer-motion';
 import { API_URL } from '../config';
 
-function detectIdle(){
+const IDLE_TIMEOUT = 30000;
+const IDLE_WARNING = 3000;
+
+function useIdleReturn(){
     const navigate = useNavigate();
+    const [remoteConnected, setRemoteConnected] = useState(Boolean(window.remoteConnected));
+    const [secondsLeft, setSecondsLeft] = useState(null);
 
-    const onIdle = () => {
-        navigate("/");
-    }
+    useEffect(() => {
+        const handleStatus = (event) => setRemoteConnected(event.detail);
+        window.addEventListener('remote-status', handleStatus);
+        return () => window.removeEventListener('remote-status', handleStatus);
+    }, []);
 
-    useIdleTimer({
-        onIdle,
-        timeout: 10000, // milliseconds
-        debounce: 500
+    const { getRemainingTime, activate } = useIdleTimer({
+        onIdle: () => navigate('/'),
+        onActive: () => setSecondsLeft(null),
+        onPrompt: () => setSecondsLeft(Math.ceil(getRemainingTime() / 1000)),
+        timeout: IDLE_TIMEOUT - IDLE_WARNING,
+        promptTimeout: IDLE_WARNING,
+        disabled: remoteConnected,
+        debounce: 500,
     });
 
+    useEffect(() => {
+        if (secondsLeft === null) return undefined;
+        const interval = setInterval(() => setSecondsLeft(Math.max(1, Math.ceil(getRemainingTime() / 1000))), 250);
+        return () => clearInterval(interval);
+    }, [secondsLeft === null, getRemainingTime]);
 
-    return null;
+    useEffect(() => {
+        if (remoteConnected) setSecondsLeft(null);
+        else activate();
+    }, [remoteConnected, activate]);
+
+    return secondsLeft;
 }
 
 function Home(){
-    // detectIdle();
+    const idleSecondsLeft = useIdleReturn();
 
     const [scope, setScope] = useState(false);
 
@@ -86,6 +109,11 @@ function Home(){
 
     return(
         <div className="home">
+            {idleSecondsLeft !== null && (
+                <div className="idle-notice" role="alert">
+                    Returning to start in {idleSecondsLeft}s. Touch the screen to stay.
+                </div>
+            )}
             <div className='nav'>
                 <div className='nav-left'>
                     <div className="nav-left-icon">
